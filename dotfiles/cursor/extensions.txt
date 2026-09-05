@@ -5,3 +5,4 @@
 #
 
 miguelsolorio.symbols
+TSRX.tsrx-vscode-plugin
