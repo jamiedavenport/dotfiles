@@ -45,6 +45,6 @@ result, apply it, and commit the resulting `mise.lock` changes when applicable.
 - `mise.lock` pins tool versions and platform-specific artifacts.
 - `bin/mise` provides the repository-pinned mise executable.
 - `dotfiles/` contains configuration for Zsh, Git, SSH, Cursor, Codex, Ghostty,
-  Starship, and the browser baseline.
+  Starship, Raycast, and the browser baseline.
 
 Local mise overrides and temporary files are intentionally ignored by Git.
