@@ -3,7 +3,5 @@
 # Add one extension ID per line after you verify it exists in Cursor's
 # marketplace / Open VSX.
 #
-# Examples depend on your actual stack:
-# esbenp.prettier-vscode
-# dbaeumer.vscode-eslint
-# charliermarsh.ruff
+
+miguelsolorio.symbols

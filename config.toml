@@ -66,6 +66,33 @@ shfmt = "latest"
 "~/.codex/AGENTS.md" = { source = "dotfiles/codex/AGENTS.md", mode = "symlink" }
 
 # ---------------------------------------------------------------------------
+# Bootstrap tasks
+# ---------------------------------------------------------------------------
+
+[tasks.bootstrap]
+description = "Install Cursor extensions"
+run = '''
+if [ "$(uname -s)" = "Darwin" ]; then
+  cursor_cli="/Applications/Cursor.app/Contents/Resources/app/bin/cursor"
+  extensions_file="dotfiles/cursor/extensions.txt"
+
+  if [ ! -f "$extensions_file" ]; then
+    extensions_file="$HOME/.config/mise/dotfiles/cursor/extensions.txt"
+  fi
+
+  if [ ! -x "$cursor_cli" ]; then
+    echo "Cursor CLI not found: $cursor_cli" >&2
+    exit 1
+  fi
+
+  awk '!/^[[:space:]]*(#|$)/' "$extensions_file" |
+    while IFS= read -r extension; do
+      "$cursor_cli" --install-extension "$extension"
+    done
+fi
+'''
+
+# ---------------------------------------------------------------------------
 # macOS preferences
 # ---------------------------------------------------------------------------
 
