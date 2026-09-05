@@ -1,6 +1,44 @@
+# Match Cursor's integrated terminal using the Default Light Modern theme.
 font-family = JetBrainsMono Nerd Font
-font-size = 14
+font-size = 13
+font-feature = -calt
+adjust-cell-height = -10%
 
-window-padding-x = 8
-window-padding-y = 8
-window-padding-balance = true
+background = #f8f8f8
+foreground = #3b3b3b
+selection-background = #add6ff
+cursor-color = #005fb8
+cursor-text = #f8f8f8
+cursor-style = block
+cursor-style-blink = true
+
+# Cursor's resolved light terminal ANSI palette.
+palette = 0=#000000
+palette = 1=#cd3131
+palette = 2=#107c10
+palette = 3=#949800
+palette = 4=#0451a5
+palette = 5=#bc05bc
+palette = 6=#0598bc
+palette = 7=#555555
+palette = 8=#666666
+palette = 9=#cd3131
+palette = 10=#14ce14
+palette = 11=#b5ba00
+palette = 12=#0451a5
+palette = 13=#bc05bc
+palette = 14=#0598bc
+palette = 15=#a5a5a5
+
+window-padding-x = 20,0
+window-padding-y = 0
+window-padding-balance = false
+window-theme = light
+macos-titlebar-style = transparent
+background-opacity = 1
+
+# Keep Cursor's blinking block cursor instead of Ghostty's prompt bar cursor.
+shell-integration-features = no-cursor,no-sudo,title,no-ssh-env,no-ssh-terminfo,path
+
+# Ghostty is updated through mise's managed Homebrew cask.
+auto-update = off

@@ -1,4 +1,5 @@
 .DS_Store
+.mise/
 
 # Never add local mise overrides
 mise.local.toml
