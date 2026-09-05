@@ -24,18 +24,21 @@ shellcheck = "latest"
 shfmt = "latest"
 
 # ---------------------------------------------------------------------------
-# Native macOS applications
+# Native macOS packages
 #
-# mise's built-in brew-cask implementation downloads Homebrew cask metadata
+# mise's built-in brew implementations download Homebrew package metadata
 # directly. Installing Homebrew itself is not required.
 # ---------------------------------------------------------------------------
 
 [bootstrap.packages]
+"brew:dockutil" = { os = "macos" }
+
 "brew-cask:ghostty" = { os = "macos" }
 "brew-cask:cursor" = { os = "macos" }
 "brew-cask:cursor-cli" = { os = "macos" }
 "brew-cask:1password" = { os = "macos" }
 "brew-cask:chatgpt" = { os = "macos" }
+"brew-cask:firefox" = { os = "macos" }
 
 # One shared font makes Cursor, its integrated terminal, and Ghostty consistent.
 "brew-cask:font-jetbrains-mono-nerd-font" = { os = "macos" }
@@ -70,14 +73,14 @@ shfmt = "latest"
 # ---------------------------------------------------------------------------
 
 [tasks.bootstrap]
-description = "Install Cursor extensions"
+description = "Configure the developer workstation"
 run = '''
 if [ "$(uname -s)" = "Darwin" ]; then
   cursor_cli="/Applications/Cursor.app/Contents/Resources/app/bin/cursor"
-  extensions_file="dotfiles/cursor/extensions.txt"
+  config_dir="$PWD"
 
-  if [ ! -f "$extensions_file" ]; then
-    extensions_file="$HOME/.config/mise/dotfiles/cursor/extensions.txt"
+  if [ ! -f "$config_dir/dotfiles/cursor/extensions.txt" ]; then
+    config_dir="$HOME/.config/mise"
   fi
 
   if [ ! -x "$cursor_cli" ]; then
@@ -85,10 +88,12 @@ if [ "$(uname -s)" = "Darwin" ]; then
     exit 1
   fi
 
-  awk '!/^[[:space:]]*(#|$)/' "$extensions_file" |
+  awk '!/^[[:space:]]*(#|$)/' "$config_dir/dotfiles/cursor/extensions.txt" |
     while IFS= read -r extension; do
       "$cursor_cli" --install-extension "$extension"
     done
+
+  "$config_dir/scripts/configure-dock"
 fi
 '''
 
@@ -98,6 +103,8 @@ fi
 
 [bootstrap.macos.dock]
 autohide = true
+magnification = false
+orientation = "bottom"
 show_recents = false
 tilesize = 48
 

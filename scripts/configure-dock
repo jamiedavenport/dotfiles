@@ -1,0 +1,72 @@
+#!/bin/sh
+set -eu
+
+if [ "$(uname -s)" != "Darwin" ]; then
+	exit 0
+fi
+
+script_dir=$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)
+repository_dir=$(dirname -- "$script_dir")
+apps_file="$repository_dir/dotfiles/macos/dock-apps.txt"
+
+dockutil_bin=$(command -v dockutil 2>/dev/null || true)
+if [ -z "$dockutil_bin" ]; then
+	for candidate in /opt/homebrew/bin/dockutil /usr/local/bin/dockutil; do
+		if [ -x "$candidate" ]; then
+			dockutil_bin="$candidate"
+			break
+		fi
+	done
+fi
+
+if [ -z "$dockutil_bin" ]; then
+	echo "dockutil is not installed" >&2
+	exit 1
+fi
+
+task_tmp_dir=$(mktemp -d)
+trap 'rm -rf "$task_tmp_dir"' EXIT HUP INT TERM
+
+desired_apps="$task_tmp_dir/desired-apps"
+current_apps="$task_tmp_dir/current-apps"
+desired_others="$task_tmp_dir/desired-others"
+current_others="$task_tmp_dir/current-others"
+
+awk '!/^[[:space:]]*(#|$)/' "$apps_file" |
+	while IFS= read -r app_path; do
+		if [ ! -d "$app_path" ]; then
+			echo "Dock application not found: $app_path" >&2
+			exit 1
+		fi
+
+		basename "$app_path" .app
+	done >"$desired_apps"
+
+printf '%s\n' "Downloads" >"$desired_others"
+
+"$dockutil_bin" --list |
+	awk -F '\t' '$3 == "persistentApps" { print $1 }' >"$current_apps"
+"$dockutil_bin" --list |
+	awk -F '\t' '$3 == "persistentOthers" { print $1 }' >"$current_others"
+
+if cmp -s "$desired_apps" "$current_apps" &&
+	cmp -s "$desired_others" "$current_others"; then
+	echo "Dock layout is already up to date"
+	exit 0
+fi
+
+"$dockutil_bin" --remove all --no-restart
+
+awk '!/^[[:space:]]*(#|$)/' "$apps_file" |
+	while IFS= read -r app_path; do
+		"$dockutil_bin" --add "$app_path" --section apps --no-restart
+	done
+
+"$dockutil_bin" --add "$HOME/Downloads" \
+	--section others \
+	--view grid \
+	--display stack \
+	--sort dateadded \
+	--no-restart
+
+killall Dock

@@ -1,3 +1,8 @@
+# mise's package manager links macOS application CLIs here on Apple Silicon.
+if [ -d /opt/homebrew/bin ]; then
+    export PATH="/opt/homebrew/bin:$PATH"
+fi
+
 # mise's installer defaults to ~/.local/bin.
 export PATH="$HOME/.local/bin:$PATH"
 

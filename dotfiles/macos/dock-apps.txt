@@ -1,0 +1,4 @@
+# Applications appear in this order between Finder and the Dock separator.
+/Applications/Cursor.app
+/Applications/Ghostty.app
+/Applications/Firefox.app
