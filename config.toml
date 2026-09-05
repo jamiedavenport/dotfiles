@@ -32,6 +32,8 @@ shfmt = "latest"
 
 [bootstrap.packages]
 "brew:dockutil" = { os = "macos" }
+"brew:zsh-autosuggestions" = { os = "macos" }
+"brew:zsh-syntax-highlighting" = { os = "macos" }
 
 "brew-cask:ghostty" = { os = "macos" }
 "brew-cask:cursor" = { os = "macos" }

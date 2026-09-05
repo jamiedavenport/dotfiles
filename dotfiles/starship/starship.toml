@@ -1,2 +1,37 @@
+"$schema" = "https://starship.rs/config-schema.json"
+
 add_newline = false
 command_timeout = 1000
+
+# Keep the primary context beside the command and secondary context aligned to
+# the right. Modules render only when their context is relevant.
+format = "$username$hostname$directory$git_branch$git_state$git_status$character"
+right_format = "$cmd_duration$status$jobs$docker_context$package$nodejs$python$rust$golang$terraform$kubernetes$aws"
+
+[directory]
+style = "bold #005fb8"
+truncation_length = 3
+truncation_symbol = "…/"
+
+[git_branch]
+format = "on [$symbol$branch(:$remote_branch)]($style) "
+style = "bold #92156a"
+
+[git_status]
+format = "([$all_status$ahead_behind]($style) )"
+style = "bold #8b5700"
+
+[character]
+success_symbol = "[❯](bold #00854c)"
+error_symbol = "[❯](bold #ce405b)"
+
+[cmd_duration]
+min_time = 2000
+format = "took [$duration](bold #6e7681) "
+
+[status]
+disabled = false
+format = "[$symbol$status](bold #ce405b) "
+
+[jobs]
+style = "bold #005fb8"

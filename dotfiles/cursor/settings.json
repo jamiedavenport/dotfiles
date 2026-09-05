@@ -73,9 +73,6 @@
             "scrollbarSlider.activeBackground": "#00000028"
         }
     },
-    "terminal.integrated.env.osx": {
-        "FIG_NEW_SESSION": "1"
-    },
     "workbench.layoutControl.enabled": false,
     "workbench.activityBar.location": "hidden",
     "workbench.view.alwaysShowHeaderActions": false,

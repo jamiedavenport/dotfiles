@@ -8,17 +8,31 @@ SAVEHIST=100000
 
 setopt APPEND_HISTORY
 setopt SHARE_HISTORY
-setopt HIST_IGNORE_DUPS
+setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_FIND_NO_DUPS
+setopt HIST_SAVE_NO_DUPS
+setopt HIST_VERIFY
 setopt HIST_REDUCE_BLANKS
 setopt AUTO_CD
 setopt INTERACTIVE_COMMENTS
+
+# Use predictable Emacs-style editing and make mise-managed tools available
+# before configuring completion and prompt integrations.
+bindkey -e
+eval "$("$HOME/.local/bin/mise" activate zsh)"
 
 # -----------------------------------------------------------------------------
 # Completion
 # -----------------------------------------------------------------------------
 
 autoload -Uz compinit
-compinit
+mkdir -p "$HOME/.cache/zsh"
+compinit -d "$HOME/.cache/zsh/zcompdump"
+
+zstyle ':completion:*' menu select
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
+zstyle ':completion:*' use-cache true
+zstyle ':completion:*' cache-path "$HOME/.cache/zsh/completion"
 
 # -----------------------------------------------------------------------------
 # Small aliases
@@ -38,9 +52,17 @@ alias reload="exec zsh"
 # Navigation / search / prompt
 # -----------------------------------------------------------------------------
 
-eval "$(zoxide init zsh)"
+# fzf owns Tab completion, Ctrl-R history search, Ctrl-T file selection, and
+# Alt-C directory selection.
 source <(fzf --zsh)
+eval "$(zoxide init zsh)"
+
+# Fish-style inline suggestions: prefer history, then Zsh completion results.
+ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#868686'
+source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+
 eval "$(starship init zsh)"
 
-# Keep mise activation at the end so configured tools win PATH resolution.
-eval "$("$HOME/.local/bin/mise" activate zsh)"
+# This must remain last so it can observe every ZLE widget registered above.
+source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
