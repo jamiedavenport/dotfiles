@@ -10,6 +10,12 @@ service_tier = "fast"
 [shell_environment_policy]
 ignore_default_excludes = false
 
+[mcp_servers.context7]
+url = "https://mcp.context7.com/mcp/oauth"
+auth = "oauth"
+enabled = true
+enabled_tools = ["resolve-library-id", "query-docs"]
+
 [projects."/Users/jamie/.config/mise"]
 trust_level = "trusted"
 

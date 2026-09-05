@@ -33,6 +33,22 @@ After the initial bootstrap:
 4. Verify authentication with `ssh -T git@github.com`.
 5. Run `mise bootstrap` to clone the configured repositories.
 
+### Context7 access
+
+Codex uses the hosted Context7 MCP server for current third-party library and
+API documentation. Its configuration is versioned, but OAuth credentials stay
+on the workstation.
+
+After the initial bootstrap, authenticate once:
+
+```sh
+codex mcp login context7
+```
+
+Complete the browser login, start a new Codex thread, and verify the connection
+with `codex mcp list` or `/mcp` in the Codex terminal UI. No Context7 API key is
+stored in this repository.
+
 The bootstrap is safe to run again. It skips resources that are already in the
 desired state, while the small imperative bootstrap task is written to be
 idempotent.

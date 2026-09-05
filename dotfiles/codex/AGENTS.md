@@ -15,6 +15,14 @@
 - Run the repository's formatter, linter, and type checker when available.
 - Report validation you could not run.
 
+## Documentation
+
+- When work depends on current third-party library or API documentation, use
+  Context7 before general web search.
+- Include the exact Context7 library ID and requested version when known.
+- Do not use Context7 for repository-local code or OpenAI product
+  documentation.
+
 ## Git
 
 - Do not force-push.
