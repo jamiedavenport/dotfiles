@@ -1,5 +1,13 @@
 model = "gpt-5.6-sol"
 model_reasoning_effort = "medium"
+approval_policy = "never"
+sandbox_mode = "danger-full-access"
+check_for_update_on_startup = false
+personality = "pragmatic"
+web_search = "live"
+
+[shell_environment_policy]
+ignore_default_excludes = false
 
 [projects."/Users/jamie/.config/mise"]
 trust_level = "trusted"
