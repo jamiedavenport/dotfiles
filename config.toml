@@ -1,0 +1,89 @@
+[settings]
+lockfile = true
+
+# ---------------------------------------------------------------------------
+# Versioned developer CLI tools
+# ---------------------------------------------------------------------------
+
+[tools]
+github-cli = "latest"
+codex = "latest"
+
+ripgrep = "latest"
+fd = "latest"
+fzf = "latest"
+zoxide = "latest"
+
+bat = "latest"
+eza = "latest"
+delta = "latest"
+jq = "latest"
+
+starship = "latest"
+shellcheck = "latest"
+shfmt = "latest"
+
+# ---------------------------------------------------------------------------
+# Native macOS applications
+#
+# mise's built-in brew-cask implementation downloads Homebrew cask metadata
+# directly. Installing Homebrew itself is not required.
+# ---------------------------------------------------------------------------
+
+[bootstrap.packages]
+"brew-cask:ghostty" = { os = "macos" }
+"brew-cask:cursor" = { os = "macos" }
+"brew-cask:cursor-cli" = { os = "macos" }
+"brew-cask:1password" = { os = "macos" }
+"brew-cask:chatgpt" = { os = "macos" }
+
+# One shared font makes Cursor, its integrated terminal, and Ghostty consistent.
+"brew-cask:font-jetbrains-mono-nerd-font" = { os = "macos" }
+
+# ---------------------------------------------------------------------------
+# Dotfiles
+# ---------------------------------------------------------------------------
+
+[dotfiles]
+"~/.zprofile" = { source = "dotfiles/zsh/zprofile", mode = "symlink" }
+"~/.zshrc" = { source = "dotfiles/zsh/zshrc", mode = "symlink" }
+
+"~/.gitconfig" = { source = "dotfiles/git/gitconfig", mode = "symlink" }
+"~/.ssh/config" = { source = "dotfiles/ssh/config", mode = "symlink" }
+
+"~/.config/starship.toml" = { source = "dotfiles/starship/starship.toml", mode = "symlink" }
+"~/.config/ghostty/config.ghostty" = { source = "dotfiles/ghostty/config.ghostty", mode = "symlink" }
+
+# Cursor GUI files are copied rather than symlinked because GUI editors may
+# replace settings files atomically. mise can capture their later changes.
+"~/Library/Application Support/Cursor/User/settings.json" = { source = "dotfiles/cursor/settings.json", mode = "copy" }
+"~/Library/Application Support/Cursor/User/keybindings.json" = { source = "dotfiles/cursor/keybindings.json", mode = "copy" }
+
+# Cursor Agent CLI config can also change when preferences are toggled.
+"~/.cursor/cli-config.json" = { source = "dotfiles/cursor/cli-config.json", mode = "copy" }
+
+"~/.codex/config.toml" = { source = "dotfiles/codex/config.toml", mode = "symlink" }
+"~/.codex/AGENTS.md" = { source = "dotfiles/codex/AGENTS.md", mode = "symlink" }
+
+# ---------------------------------------------------------------------------
+# macOS preferences
+# ---------------------------------------------------------------------------
+
+[bootstrap.macos.dock]
+autohide = true
+show_recents = false
+tilesize = 48
+
+[bootstrap.macos.finder]
+show_all_files = true
+show_pathbar = true
+show_status_bar = true
+preferred_view_style = "list"
+
+[bootstrap.macos.keyboard]
+key_repeat = 2
+initial_key_repeat = 15
+press_and_hold = false
+
+[bootstrap.macos.trackpad]
+tap_to_click = true

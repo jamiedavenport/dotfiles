@@ -1,0 +1,11 @@
+.DS_Store
+
+# Never add local mise overrides
+mise.local.toml
+mise.local.lock
+mise.*.local.toml
+mise.*.local.lock
+
+# Temporary files
+*.swp
+*.tmp

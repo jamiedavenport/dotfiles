@@ -1,0 +1,46 @@
+# -----------------------------------------------------------------------------
+# History
+# -----------------------------------------------------------------------------
+
+HISTFILE="$HOME/.zsh_history"
+HISTSIZE=100000
+SAVEHIST=100000
+
+setopt APPEND_HISTORY
+setopt SHARE_HISTORY
+setopt HIST_IGNORE_DUPS
+setopt HIST_REDUCE_BLANKS
+setopt AUTO_CD
+setopt INTERACTIVE_COMMENTS
+
+# -----------------------------------------------------------------------------
+# Completion
+# -----------------------------------------------------------------------------
+
+autoload -Uz compinit
+compinit
+
+# -----------------------------------------------------------------------------
+# Small aliases
+# -----------------------------------------------------------------------------
+
+alias g="git"
+alias gs="git status -sb"
+alias gd="git diff"
+alias gl="git log --oneline --decorate --graph"
+
+alias ll="eza -lah --git --group-directories-first"
+alias cat="bat --paging=never"
+
+alias reload="exec zsh"
+
+# -----------------------------------------------------------------------------
+# Navigation / search / prompt
+# -----------------------------------------------------------------------------
+
+eval "$(zoxide init zsh)"
+source <(fzf --zsh)
+eval "$(starship init zsh)"
+
+# Keep mise activation at the end so configured tools win PATH resolution.
+eval "$("$HOME/.local/bin/mise" activate zsh)"

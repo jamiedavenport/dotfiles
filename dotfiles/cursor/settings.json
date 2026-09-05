@@ -1,0 +1,90 @@
+{
+    // ─────────────────────────────────────────
+    // APPEARANCE
+    // ─────────────────────────────────────────
+    "workbench.iconTheme": "symbols",
+    "workbench.colorTheme": "Default Light Modern",
+    "window.autoDetectColorScheme": false,
+    "window.zoomLevel": 0,
+    // Remove unnecessary top-level chrome
+    "window.commandCenter": false,
+    // ─────────────────────────────────────────
+    // TYPOGRAPHY
+    // ─────────────────────────────────────────
+    "editor.fontFamily": "JetBrains Mono",
+    "editor.fontSize": 14,
+    "editor.lineHeight": 22,
+    "editor.fontLigatures": true,
+    "editor.padding.top": 12,
+    "editor.padding.bottom": 12,
+    // ─────────────────────────────────────────
+    // EDITOR
+    // ─────────────────────────────────────────
+    "editor.minimap.enabled": false,
+    "editor.renderWhitespace": "selection",
+    "editor.scrollBeyondLastLine": false,
+    "editor.guides.indentation": false,
+    "editor.guides.bracketPairs": false,
+    "editor.bracketPairColorization.enabled": false,
+    "editor.smoothScrolling": true,
+    "editor.cursorSmoothCaretAnimation": "on",
+    "editor.cursorBlinking": "smooth",
+    // Keep these useful developer features
+    "editor.codeLens": true,
+    "editor.folding": true,
+    "editor.lineNumbers": "on",
+    // This one is personal. Start without it.
+    "editor.stickyScroll.enabled": false,
+    // ─────────────────────────────────────────
+    // NAVIGATION
+    // ─────────────────────────────────────────
+    "breadcrumbs.enabled": false,
+    "explorer.compactFolders": true,
+    "workbench.tree.indent": 14,
+    // ─────────────────────────────────────────
+    // TABS
+    // ─────────────────────────────────────────
+    "workbench.editor.tabSizing": "shrink",
+    "workbench.editor.wrapTabs": false,
+    "workbench.editor.highlightModifiedTabs": true,
+    "workbench.editor.empty.hint": "hidden",
+    // ─────────────────────────────────────────
+    // TERMINAL
+    // ─────────────────────────────────────────
+    "terminal.integrated.fontFamily": "JetBrains Mono",
+    "terminal.integrated.fontSize": 13,
+    "terminal.integrated.lineHeight": 1.2,
+    "terminal.integrated.cursorBlinking": true,
+    // ─────────────────────────────────────────
+    // SUBTLE THEME POLISH
+    // ─────────────────────────────────────────
+    "workbench.colorCustomizations": {
+        "[GitHub Light Default]": {
+            "scrollbar.shadow": "#00000000",
+            "scrollbarSlider.background": "#00000012",
+            "scrollbarSlider.hoverBackground": "#00000020",
+            "scrollbarSlider.activeBackground": "#00000028"
+        }
+    },
+    "terminal.integrated.env.osx": {
+        "FIG_NEW_SESSION": "1"
+    },
+    "prettier.documentSelectors": [
+        "**/*.tsrx"
+    ],
+    "[ripple]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "workbench.layoutControl.enabled": false,
+    "workbench.activityBar.location": "hidden",
+    "workbench.view.alwaysShowHeaderActions": false,
+    "workbench.activityBar.orientation": "vertical",
+    // Hide the bottom bar entirely
+    "workbench.statusBar.visible": false,
+    // Hide back / forward arrows in the title bar
+    "workbench.navigationControl.enabled": false,
+    "symbols.hidesExplorerArrows": false,
+    "terminal.integrated.tabs.hideCondition": "singleTerminal",
+    "terminal.integrated.tabs.showActiveTerminal": "never",
+    "terminal.integrated.tabs.showActions": "never",
+}

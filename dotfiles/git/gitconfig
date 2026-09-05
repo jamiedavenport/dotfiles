@@ -1,0 +1,41 @@
+[user]
+    name = Jamie Davenport
+    email = 1329874+jamiedavenport@users.noreply.github.com
+
+[init]
+    defaultBranch = main
+
+[core]
+    editor = cursor --wait
+    pager = delta
+
+[interactive]
+    diffFilter = delta --color-only
+
+[delta]
+    navigate = true
+    line-numbers = true
+
+[merge]
+    conflictStyle = zdiff3
+
+[diff]
+    colorMoved = default
+
+[pull]
+    rebase = true
+
+[fetch]
+    prune = true
+
+[push]
+    autoSetupRemote = true
+
+[rerere]
+    enabled = true
+
+[branch]
+    sort = -committerdate
+
+[tag]
+    sort = version:refname

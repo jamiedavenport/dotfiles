@@ -1,0 +1,5 @@
+# mise's installer defaults to ~/.local/bin.
+export PATH="$HOME/.local/bin:$PATH"
+
+# Make mise shims available to login/non-interactive shells.
+export PATH="$HOME/.local/share/mise/shims:$PATH"

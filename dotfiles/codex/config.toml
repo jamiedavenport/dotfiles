@@ -1,0 +1,4 @@
+# Keep global Codex configuration intentionally minimal.
+#
+# Add stable preferences here only when you have deliberately chosen them.
+# Project-specific behavior belongs in the project's AGENTS.md.
