@@ -99,9 +99,55 @@ if [ "$(uname -s)" = "Darwin" ]; then
     exit 1
   fi
 
+  installed_extension_ids=$("$cursor_cli" --list-extensions)
+  installed_extension_versions=$("$cursor_cli" --list-extensions --show-versions)
+  cursor_extension_tmp_dir=$(mktemp -d)
+  trap 'rm -rf "$cursor_extension_tmp_dir"' EXIT HUP INT TERM
+
   awk '!/^[[:space:]]*(#|$)/' "$config_dir/dotfiles/cursor/extensions.txt" |
     while IFS= read -r extension; do
-      "$cursor_cli" --install-extension "$extension"
+      case "$extension" in
+        *@*) installed_extensions="$installed_extension_versions" ;;
+        *) installed_extensions="$installed_extension_ids" ;;
+      esac
+
+      if printf '%s\n' "$installed_extensions" | grep -Fqix -- "$extension"; then
+        continue
+      fi
+
+      if extension_install_output=$("$cursor_cli" --install-extension "$extension" 2>&1); then
+        printf '%s\n' "$extension_install_output"
+        continue
+      fi
+
+      extension_id=${extension%@*}
+      extension_version=${extension#*@}
+      extension_publisher=${extension_id%%.*}
+      extension_name=${extension_id#*.}
+
+      if [ "$extension_id" = "$extension_name" ]; then
+        printf '%s\n' "$extension_install_output" >&2
+        echo "Invalid Cursor extension ID: $extension" >&2
+        exit 1
+      fi
+
+      open_vsx_metadata_url="https://open-vsx.org/api/$extension_publisher/$extension_name"
+      if [ "$extension" = "$extension_version" ]; then
+        open_vsx_metadata_url="$open_vsx_metadata_url/latest"
+      else
+        open_vsx_metadata_url="$open_vsx_metadata_url/$extension_version"
+      fi
+
+      echo "Cursor marketplace unavailable; installing $extension from Open VSX."
+      open_vsx_download_url=$(curl -fsSL "$open_vsx_metadata_url" |
+        jq -er '.files.download | select(type == "string" and length > 0)') || {
+        printf '%s\n' "$extension_install_output" >&2
+        echo "Could not resolve $extension from Open VSX." >&2
+        exit 1
+      }
+      extension_vsix="$cursor_extension_tmp_dir/$extension_id.vsix"
+      curl -fsSL "$open_vsx_download_url" -o "$extension_vsix"
+      "$cursor_cli" --install-extension "$extension_vsix"
     done
 
   "$config_dir/scripts/configure-dock"

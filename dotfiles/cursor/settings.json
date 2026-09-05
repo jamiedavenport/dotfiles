@@ -6,6 +6,9 @@
     "workbench.colorTheme": "Default Light Modern",
     "window.autoDetectColorScheme": false,
     "window.zoomLevel": 0,
+
+    // Cursor is updated through mise's managed Homebrew cask.
+    "update.mode": "none",
     
     // Remove unnecessary top-level chrome
     "window.commandCenter": false,
