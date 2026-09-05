@@ -5,9 +5,16 @@ sandbox_mode = "danger-full-access"
 check_for_update_on_startup = false
 personality = "pragmatic"
 web_search = "live"
+service_tier = "fast"
 
 [shell_environment_policy]
 ignore_default_excludes = false
 
 [projects."/Users/jamie/.config/mise"]
+trust_level = "trusted"
+
+[projects."/Users/jamie/sidequest"]
+trust_level = "trusted"
+
+[projects."/Users/jamie/policystack"]
 trust_level = "trusted"

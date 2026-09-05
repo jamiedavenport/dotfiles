@@ -46,6 +46,14 @@ shfmt = "latest"
 "brew-cask:font-jetbrains-mono-nerd-font" = { os = "macos" }
 
 # ---------------------------------------------------------------------------
+# Common repositories
+# ---------------------------------------------------------------------------
+
+[bootstrap.repos]
+"~/policystack" = { url = "git@github.com:jamiedavenport/policystack.git" }
+"~/sidequest" = { url = "git@github.com:jamiedavenport/sidequest.git" }
+
+# ---------------------------------------------------------------------------
 # Dotfiles
 # ---------------------------------------------------------------------------
 
