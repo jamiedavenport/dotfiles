@@ -22,11 +22,16 @@
 
 ## Validation
 
+- Run `mise run check` for the complete read-only validation suite.
 - Run `./bin/mise bootstrap plan` after changing bootstrap configuration.
 - Run `./bin/mise bootstrap status` to inspect current resource state.
 - Run `./bin/mise bootstrap dotfiles diff` after changing managed dotfiles.
-- Run `shellcheck scripts/configure-dock bin/mise` after changing shell scripts.
-- Run `shfmt -d scripts/configure-dock bin/mise` after changing shell scripts.
+- Run `shellcheck bootstrap.sh scripts/configure-dock` after changing maintained
+  shell scripts.
+- Run `shfmt -d bootstrap.sh scripts/configure-dock` after changing maintained
+  shell scripts.
+- Treat `bin/mise` as generated: regenerate it with mise and validate it with
+  `bash -n bin/mise`; do not reformat it manually.
 - Do not run an applying command such as `./bin/mise bootstrap` or
   `./bin/mise bootstrap dotfiles apply` unless the task explicitly requires
   changing the workstation.

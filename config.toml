@@ -108,6 +108,25 @@ if [ "$(uname -s)" = "Darwin" ]; then
 fi
 '''
 
+[tasks.check]
+description = "Validate the configuration without changing the workstation"
+run = '''
+cd "$HOME/.config/mise"
+
+shellcheck bootstrap.sh scripts/configure-dock
+shfmt -d bootstrap.sh scripts/configure-dock
+bash -n bin/mise
+
+config_file=$(mise config ls | awk '$1 ~ /config\.toml$/ { print $1; exit }')
+if [ -z "$config_file" ]; then
+  echo "mise did not load config.toml" >&2
+  exit 1
+fi
+
+mise bootstrap plan
+mise bootstrap dotfiles diff
+'''
+
 # ---------------------------------------------------------------------------
 # macOS preferences
 # ---------------------------------------------------------------------------
