@@ -1,4 +1,5 @@
-# Keep global Codex configuration intentionally minimal.
-#
-# Add stable preferences here only when you have deliberately chosen them.
-# Project-specific behavior belongs in the project's AGENTS.md.
+model = "gpt-5.6-sol"
+model_reasoning_effort = "medium"
+
+[projects."/Users/jamie/.config/mise"]
+trust_level = "trusted"
