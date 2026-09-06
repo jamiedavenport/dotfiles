@@ -43,6 +43,7 @@ shfmt = "latest"
 "brew-cask:chatgpt" = { os = "macos" }
 "brew-cask:raycast" = { os = "macos/arm64" }
 "brew-cask:thebrowsercompany-dia" = { os = "macos/arm64" }
+"brew-cask:vimcal" = { os = "macos" }
 "brew-cask:whatsapp" = { os = "macos" }
 "brew-cask:tidal" = { os = "macos" }
 "brew-cask:block-buzz" = { os = "macos" }

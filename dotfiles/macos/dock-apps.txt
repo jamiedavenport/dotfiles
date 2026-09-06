@@ -2,6 +2,7 @@
 /Applications/Dia.app
 /Applications/Cursor.app
 /Applications/Ghostty.app
+/Applications/Vimcal.app
 /Applications/WhatsApp.app
 /Applications/TIDAL.app
 /Applications/Buzz.app
