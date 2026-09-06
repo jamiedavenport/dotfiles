@@ -16,6 +16,11 @@ auth = "oauth"
 enabled = true
 enabled_tools = ["resolve-library-id", "query-docs"]
 
+[mcp_servers.sidequest]
+url = "https://sdqst.app/mcp"
+auth = "oauth"
+enabled = true
+
 [projects."/Users/jamie/.config/mise"]
 trust_level = "trusted"
 

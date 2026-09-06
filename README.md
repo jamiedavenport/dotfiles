@@ -49,6 +49,25 @@ Complete the browser login, start a new Codex thread, and verify the connection
 with `codex mcp list` or `/mcp` in the Codex terminal UI. No Context7 API key is
 stored in this repository.
 
+### Sidequest access
+
+Codex uses the hosted [Sidequest MCP server](https://github.com/jamiedavenport/sidequest/blob/main/docs/mcp.md)
+at `https://sdqst.app/mcp`. After the initial bootstrap, authenticate once:
+
+```sh
+./bin/mise exec -- codex mcp login sidequest
+```
+
+Complete the browser email-code login and choose read access or allow task
+changes. Start a new Codex thread and verify the connection with
+`./bin/mise exec -- codex mcp list` or `/mcp` in the Codex terminal UI.
+OAuth credentials stay on the workstation. Manage or revoke access at
+[Sidequest connections](https://sdqst.app/connections).
+
+The hosted MCP endpoint must be enabled before login can succeed. If the endpoint
+or OAuth discovery returns HTTP 404, follow Sidequest's deployment instructions
+to enable MCP, then retry the login.
+
 The bootstrap is safe to run again. It skips resources that are already in the
 desired state, while the small imperative bootstrap task is written to be
 idempotent.
