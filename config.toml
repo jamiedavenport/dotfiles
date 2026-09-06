@@ -1,5 +1,6 @@
 [settings]
 lockfile = true
+minimum_release_age_excludes = ["codex"]
 
 # ---------------------------------------------------------------------------
 # Versioned developer CLI tools
