@@ -43,6 +43,8 @@ shfmt = "latest"
 "brew-cask:raycast" = { os = "macos/arm64" }
 "brew-cask:thebrowsercompany-dia" = { os = "macos/arm64" }
 "brew-cask:whatsapp" = { os = "macos" }
+"brew-cask:tidal" = { os = "macos" }
+"brew-cask:block-buzz" = { os = "macos" }
 
 # One shared font makes Cursor, its integrated terminal, and Ghostty consistent.
 "brew-cask:font-jetbrains-mono-nerd-font" = { os = "macos" }
