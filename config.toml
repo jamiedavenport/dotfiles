@@ -96,6 +96,10 @@ shfmt = "latest"
 # Bootstrap tasks
 # ---------------------------------------------------------------------------
 
+[tasks."dns:cloudflare"]
+description = "Use Cloudflare DNS on Wi-Fi"
+run = 'networksetup -setdnsservers "Wi-Fi" 1.1.1.1 1.0.0.1'
+
 [tasks."bootstrap:jamie"]
 description = "Install Jamie's private ui.sh skills (or preview with --dry-run)"
 run = '''
