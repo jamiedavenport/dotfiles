@@ -6,3 +6,4 @@
 
 miguelsolorio.symbols
 TSRX.tsrx-vscode-plugin
+astro-build.astro-vscode

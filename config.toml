@@ -87,6 +87,7 @@ shfmt = "latest"
 
 # Cursor Agent CLI config can also change when preferences are toggled.
 "~/.cursor/cli-config.json" = { source = "dotfiles/cursor/cli-config.json", mode = "copy" }
+"~/.cursor/mcp.json" = { source = "dotfiles/cursor/mcp.json", mode = "copy" }
 
 "~/.codex/config.toml" = { source = "dotfiles/codex/config.toml", mode = "symlink" }
 "~/.codex/AGENTS.md" = { source = "dotfiles/codex/AGENTS.md", mode = "symlink" }

@@ -41,6 +41,11 @@
     "editor.lineNumbers": "on",
     // This one is personal. Start without it.
     "editor.stickyScroll.enabled": false,
+
+    "[astro]": {
+        "editor.defaultFormatter": "astro-build.astro-vscode",
+        "editor.formatOnSave": true
+    },
     
     // ─────────────────────────────────────────
     // NAVIGATION
