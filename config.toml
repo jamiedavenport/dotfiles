@@ -32,6 +32,7 @@ shfmt = "latest"
 # ---------------------------------------------------------------------------
 
 [bootstrap.packages]
+"brew:cloudflared" = { os = "macos" }
 "brew:dockutil" = { os = "macos" }
 "brew:zsh-autosuggestions" = { os = "macos" }
 "brew:zsh-syntax-highlighting" = { os = "macos" }
