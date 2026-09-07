@@ -68,6 +68,21 @@ The hosted MCP endpoint must be enabled before login can succeed. If the endpoin
 or OAuth discovery returns HTTP 404, follow Sidequest's deployment instructions
 to enable MCP, then retry the login.
 
+### Polar access
+
+Codex uses the hosted [Polar MCP server](https://polar.sh/docs/integrate/mcp)
+at `https://mcp.polar.sh/mcp/polar-mcp` for the live Polar organization.
+After the initial bootstrap, authenticate once:
+
+```sh
+./bin/mise exec -- codex mcp login polar
+```
+
+Complete the browser login and authorize access to your organization. Start a
+new Codex thread and verify the connection with
+`./bin/mise exec -- codex mcp list` or `/mcp` in the Codex terminal UI.
+OAuth credentials stay on the workstation; no API key is stored in this repository.
+
 The bootstrap is safe to run again. It skips resources that are already in the
 desired state, while the small imperative bootstrap task is written to be
 idempotent.
