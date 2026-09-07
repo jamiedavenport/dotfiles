@@ -30,6 +30,11 @@ url = "https://mcp.polar.sh/mcp/polar-mcp"
 auth = "oauth"
 enabled = true
 
+[mcp_servers.polar-sandbox]
+url = "https://mcp.polar.sh/mcp/polar-sandbox"
+auth = "oauth"
+enabled = true
+
 [projects."/Users/jamie/.config/mise"]
 trust_level = "trusted"
 

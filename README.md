@@ -78,10 +78,25 @@ After the initial bootstrap, authenticate once:
 ./bin/mise exec -- codex mcp login polar
 ```
 
+The `polar-sandbox` server uses `https://mcp.polar.sh/mcp/polar-sandbox`
+for testing. Authenticate it separately:
+
+```sh
+./bin/mise exec -- codex mcp login polar-sandbox
+```
+
 Complete the browser login and authorize access to your organization. Start a
 new Codex thread and verify the connection with
 `./bin/mise exec -- codex mcp list` or `/mcp` in the Codex terminal UI.
 OAuth credentials stay on the workstation; no API key is stored in this repository.
+
+If sandbox login reports `OAuth authorization endpoint origin does not match the
+authorization server origin without issuer-bound callbacks`, Polar's sandbox
+OAuth discovery metadata is incompatible with Codex's validation. The server
+is configured, but authentication is blocked by this compatibility issue.
+The same error is reported for Polar in
+[Codex issue #41362](https://github.com/openai/codex/issues/41362#issuecomment-5462330681).
+Retry login after a compatible fix is available in Codex or Polar.
 
 The bootstrap is safe to run again. It skips resources that are already in the
 desired state, while the small imperative bootstrap task is written to be
