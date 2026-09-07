@@ -41,6 +41,7 @@ shfmt = "latest"
 "brew-cask:cursor-cli" = { os = "macos" }
 "brew-cask:1password" = { os = "macos" }
 "brew-cask:chatgpt" = { os = "macos" }
+"brew-cask:paper-design" = { os = "macos/arm64" }
 "brew-cask:raycast" = { os = "macos/arm64" }
 "brew-cask:thebrowsercompany-dia" = { os = "macos/arm64" }
 "brew-cask:vimcal" = { os = "macos" }

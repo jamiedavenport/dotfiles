@@ -21,6 +21,10 @@ url = "https://sdqst.app/mcp"
 auth = "oauth"
 enabled = true
 
+[mcp_servers.paper]
+url = "http://127.0.0.1:29979/mcp"
+enabled = true
+
 [projects."/Users/jamie/.config/mise"]
 trust_level = "trusted"
 
