@@ -33,6 +33,82 @@ After the initial bootstrap:
 4. Verify authentication with `ssh -T git@github.com`.
 5. Run `mise bootstrap` to clone the configured repositories.
 
+### Jamie's personal bootstrap
+
+The public bootstrap installs Node, fnox, and the 1Password CLI. Paid ui.sh skills
+are installed separately, directly into `~/.agents/skills/` for global Codex
+discovery. Their content and your token must never be committed to this repo.
+
+After the initial bootstrap:
+
+1. Sign into the 1Password desktop app and enable **Settings → Developer →
+   Integrate with 1Password CLI**.
+2. Store the ui.sh installer token in the `Token` field of the `ui.sh` item in
+   your private `Personal` vault (`op://Personal/ui.sh/Token`).
+3. Preview, then run the personal bootstrap:
+
+```sh
+./bin/mise run bootstrap:jamie -- --dry-run
+./bin/mise run bootstrap:jamie
+```
+
+`fnox.toml` contains only the vault reference. The installer uses the `ui-sh`
+profile through `fnox exec`; the token is never loaded by normal shell startup,
+the public bootstrap, or `check`. Authentication failure stops the personal
+installation without replacing existing skills. The task loads this repo's
+explicit fnox config in isolation; edit its reference if the item moves.
+
+A complete installation is preserved without authentication or downloading.
+If you previously installed the nine skills manually, explicitly adopt them
+once to record their hashes and restrict their permissions:
+
+```sh
+./bin/mise run bootstrap:jamie -- --adopt --dry-run
+./bin/mise run bootstrap:jamie -- --adopt
+```
+
+Adoption trusts that those existing folders are your ui.sh installation. It
+does not authenticate or verify them against the service. New downloads are
+validated and get a manifest automatically.
+
+To fetch all currently available skills, including newly released ones:
+
+```sh
+./bin/mise run skills:update -- --dry-run
+./bin/mise run skills:update
+```
+
+Dry runs inspect local state only; they do not fetch an upstream diff. An update
+downloads into a private staging directory, reports changes, then applies them.
+It refuses to overwrite untracked or locally modified skills whose contents
+differ from the download. Previously managed skills no longer returned by ui.sh
+are retained. Download failures preserve existing skills, and installation
+failures attempt to restore replaced folders.
+
+The private manifest at `~/.local/state/ui-sh/manifest.json` records file hashes
+and timestamps. Downloads never enter the repo, and installed skill directories
+and files use owner-only permissions. Other agents running as your macOS user
+may also discover `~/.agents/skills/`.
+
+The installer is pinned to `@uidotsh/install@0.2.0`; ui.sh's downloaded skill
+content is not version-pinned. Its CLI requires the token as a process argument,
+so it can be visible to process inspection during installation. Installer output
+is not echoed, npm debug logs are disabled for that invocation, and downloaded
+files containing the token are rejected.
+
+`check` tests failure and update behavior with synthetic fixtures and rejects
+tracked paid skill paths or ui.sh `SKILL.md` files. Ignore rules also cover the
+previous skill paths and local fnox overrides. Do not force-add commercial
+content or publish installation archives.
+
+Implementation references: [fnox 1Password](https://fnox.jdx.dev/providers/1password.html),
+[fnox configuration](https://fnox.jdx.dev/reference/configuration.html),
+[ui.sh installation](https://ui.sh/skills/design), and
+[mise bootstrap](https://github.com/jdx/mise/blob/main/docs/cli/bootstrap.md).
+Documentation was checked through Context7 IDs `/jdx/mise` (requested mise
+`2026.9.1` compatibility) and `/jdx/fnox`, plus fnox `1.35.1` documentation and
+ui.sh installer `0.2.0` CLI help.
+
 ### Context7 access
 
 Codex uses the hosted Context7 MCP server for current third-party library and

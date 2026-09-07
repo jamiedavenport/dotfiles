@@ -1,0 +1,11 @@
+# References only: the token and purchased skills must never be committed.
+root = true
+
+[providers.personal]
+type = "1password"
+
+[profiles.ui-sh.secrets.UI_SH_TOKEN]
+provider = "personal"
+value = "op://Personal/ui.sh/Token"
+env = "exec"
+if_missing = "error"

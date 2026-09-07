@@ -10,6 +10,11 @@ minimum_release_age_excludes = ["codex"]
 github-cli = "latest"
 codex = "latest"
 
+# Personal bootstrap dependencies. Credentials are resolved only by fnox exec.
+node = "24.20.0"
+fnox = "1.35.1"
+"aqua:1password/cli" = "2.39.0"
+
 ripgrep = "latest"
 fd = "latest"
 fzf = "latest"
@@ -89,6 +94,26 @@ shfmt = "latest"
 # ---------------------------------------------------------------------------
 # Bootstrap tasks
 # ---------------------------------------------------------------------------
+
+[tasks."bootstrap:jamie"]
+description = "Install Jamie's private ui.sh skills (or preview with --dry-run)"
+run = '''
+config_dir="$PWD"
+if [ ! -f "$config_dir/scripts/install-ui-skills.mjs" ]; then
+  config_dir="$HOME/.config/mise"
+fi
+node "$config_dir/scripts/install-ui-skills.mjs"
+'''
+
+[tasks."skills:update"]
+description = "Download and update privately installed ui.sh skills"
+run = '''
+config_dir="$PWD"
+if [ ! -f "$config_dir/scripts/install-ui-skills.mjs" ]; then
+  config_dir="$HOME/.config/mise"
+fi
+node "$config_dir/scripts/install-ui-skills.mjs" --update
+'''
 
 # Cap's cask uses an extensionless tar.gz that mise cannot extract reliably.
 [tasks.install-cap]
@@ -181,6 +206,9 @@ cd "$HOME/.config/mise"
 shellcheck bootstrap.sh scripts/configure-dock scripts/install-cap
 shfmt -d bootstrap.sh scripts/configure-dock scripts/install-cap
 bash -n bin/mise
+node --check scripts/install-ui-skills.mjs
+node --test tests/install-ui-skills.test.mjs
+node scripts/check-private-skills.mjs
 
 config_file=$(mise config ls | awk '$1 ~ /config\.toml$/ { print $1; exit }')
 if [ -z "$config_file" ]; then
@@ -191,6 +219,7 @@ fi
 mise bootstrap plan
 mise bootstrap dotfiles diff
 ./scripts/install-cap --dry-run
+node scripts/install-ui-skills.mjs --dry-run
 '''
 
 # ---------------------------------------------------------------------------

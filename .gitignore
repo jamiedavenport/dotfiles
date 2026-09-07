@@ -7,6 +7,14 @@ mise.local.lock
 mise.*.local.toml
 mise.*.local.lock
 
+# Personal secret overrides and commercial skill downloads must stay local.
+fnox.local.toml
+fnox.*.local.toml
+.fnox.local.toml
+dotfiles/codex/skills/
+.agents/skills/
+.codex/skills/
+
 # Temporary files
 *.swp
 *.tmp
