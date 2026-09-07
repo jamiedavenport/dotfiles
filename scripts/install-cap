@@ -1,0 +1,95 @@
+#!/bin/sh
+set -eu
+
+case "${1:-}" in
+--dry-run) dry_run=true ;;
+"") dry_run=false ;;
+*)
+	echo "Usage: $0 [--dry-run]" >&2
+	exit 1
+	;;
+esac
+
+if [ "$(uname -s)" != "Darwin" ]; then
+	exit 0
+fi
+
+app_path=/Applications/Cap.app
+if [ -e "$app_path" ] || [ -L "$app_path" ]; then
+	if [ -d "$app_path" ] &&
+		[ "$(/usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' "$app_path/Contents/Info.plist" 2>/dev/null || true)" = "so.cap.desktop" ]; then
+		echo "Cap is already installed; updates are managed by the app."
+		exit 0
+	fi
+	echo "Cannot install Cap: $app_path exists but is not a Cap app bundle." >&2
+	exit 1
+fi
+
+# Detect Apple Silicon even when bootstrap runs through Rosetta.
+if [ "$(sysctl -n hw.optional.arm64 2>/dev/null || true)" = "1" ]; then
+	platform=apple-silicon
+else
+	case "$(uname -m)" in
+	arm64) platform=apple-silicon ;;
+	x86_64) platform=intel ;;
+	*)
+		echo "Unsupported Mac architecture: $(uname -m)" >&2
+		exit 1
+		;;
+	esac
+fi
+
+download_url="https://cap.so/download/$platform"
+if [ "$dry_run" = true ]; then
+	echo "Install Cap from $download_url to $app_path"
+	exit 0
+fi
+
+install_command() {
+	if [ -w /Applications ]; then
+		"$@"
+	else
+		sudo "$@"
+	fi
+}
+
+cap_tmp_dir=$(mktemp -d)
+cap_stage_dir=''
+cap_mounted=false
+cleanup() {
+	if [ -n "$cap_stage_dir" ]; then
+		install_command rm -rf "$cap_stage_dir"
+	fi
+	if [ "$cap_mounted" = true ]; then
+		if ! hdiutil detach -quiet "$cap_tmp_dir/mount"; then
+			echo "Could not eject the Cap disk image; temporary files remain at $cap_tmp_dir" >&2
+			return
+		fi
+	fi
+	rm -rf "$cap_tmp_dir"
+}
+trap cleanup EXIT
+trap 'exit 130' INT
+trap 'exit 143' HUP TERM
+
+echo "Downloading Cap for $platform..."
+curl --fail --location --silent --show-error --retry 3 \
+	--proto '=https' --proto-redir '=https' \
+	"$download_url" -o "$cap_tmp_dir/Cap.dmg"
+hdiutil attach -quiet -readonly -nobrowse \
+	-mountpoint "$cap_tmp_dir/mount" "$cap_tmp_dir/Cap.dmg"
+cap_mounted=true
+
+source_app="$cap_tmp_dir/mount/Cap.app"
+if [ "$(/usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' "$source_app/Contents/Info.plist")" != "so.cap.desktop" ]; then
+	echo "The downloaded disk image does not contain the expected Cap app." >&2
+	exit 1
+fi
+codesign --verify --deep --strict "$source_app"
+spctl --assess --type execute "$source_app"
+
+# Finish copying on the destination filesystem before exposing the app.
+cap_stage_dir=$(install_command mktemp -d /Applications/.cap-install.XXXXXX)
+install_command ditto "$source_app" "$cap_stage_dir/Cap.app"
+install_command mv -n "$cap_stage_dir/Cap.app" /Applications/
+echo "Cap installed at $app_path"
