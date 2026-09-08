@@ -63,6 +63,7 @@ shfmt = "latest"
 # ---------------------------------------------------------------------------
 
 [bootstrap.repos]
+"~/capd" = { url = "git@github.com:jamiedavenport/capd.git" }
 "~/policystack" = { url = "git@github.com:jamiedavenport/policystack.git" }
 "~/sidequest" = { url = "git@github.com:jamiedavenport/sidequest.git" }
 
