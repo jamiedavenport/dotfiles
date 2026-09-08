@@ -10,6 +10,11 @@ service_tier = "fast"
 [shell_environment_policy]
 ignore_default_excludes = false
 
+[mcp_servers.axiom]
+url = "https://mcp.axiom.co/mcp"
+auth = "oauth"
+enabled = true
+
 [mcp_servers.context7]
 url = "https://mcp.context7.com/mcp/oauth"
 auth = "oauth"
