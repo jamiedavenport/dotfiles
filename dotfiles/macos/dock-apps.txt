@@ -7,3 +7,4 @@
 /Applications/WhatsApp.app
 /Applications/TIDAL.app
 /Applications/Buzz.app
+/Applications/NordVPN.app
