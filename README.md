@@ -18,10 +18,10 @@ then run the command again.
 
 The bootstrap downloads the repository-pinned mise launcher to
 `~/.local/bin/mise`, clones this repository to `~/.config/mise`, and configures
-packages, dotfiles, macOS preferences, developer tools, Cursor extensions, and
-the Dock. Cloning the additional development repositories is deliberately
-deferred because `sidequest` is private and a new Mac does not have GitHub
-credentials yet.
+packages, dotfiles, macOS preferences, developer tools, Cursor extensions, the
+Dock, and the account photo. Cloning the additional development repositories is
+deliberately deferred because `sidequest` is private and a new Mac does not have
+GitHub credentials yet.
 
 ### GitHub access
 
@@ -207,6 +207,29 @@ result, apply it, and commit the resulting `mise.lock` changes when applicable.
 `mise run check` runs ShellCheck and shfmt, verifies that mise loads this
 repository's configuration, previews bootstrap changes, and reports managed
 dotfile drift. It does not apply changes to the workstation.
+
+### Account photo
+
+`dotfiles/macos/profile-photo.png` is copied from
+`~/jamiedavenport.me/public/images/jamie.png`. Replace this managed source to
+change the photo used by future bootstraps.
+
+```sh
+./bin/mise run profile-photo -- --dry-run  # Preview the account photo change
+./bin/mise run profile-photo              # Set only the account photo
+```
+
+The task uses Apple's Swift and OpenDirectory frameworks, provided by the
+existing Command Line Tools prerequisite. It sets the current local user's
+picture path and embeds JPEG data in the account record so the login photo
+does not depend on reading the home directory. It compares the actual account
+attributes before writing, verifies the result, and attempts to restore any
+attributes it changed if an update fails.
+
+`bootstrap` runs the task; `check` type-checks it and runs its read-only preview.
+`mise bootstrap plan` only previews declarative resources, so use the command
+above to preview this task. The photo may require signing out and back in to
+appear in an already-open login or settings view.
 
 ### Cap screen capture
 

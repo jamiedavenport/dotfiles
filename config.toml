@@ -124,6 +124,16 @@ fi
 node "$config_dir/scripts/install-ui-skills.mjs" --update
 '''
 
+[tasks.profile-photo]
+description = "Set the macOS account photo (or preview with --dry-run)"
+run = '''
+config_dir="$PWD"
+if [ ! -f "$config_dir/scripts/configure-profile-photo.swift" ]; then
+  config_dir="$HOME/.config/mise"
+fi
+/usr/bin/swift "$config_dir/scripts/configure-profile-photo.swift"
+'''
+
 # Cap's cask uses an extensionless tar.gz that mise cannot extract reliably.
 [tasks.install-cap]
 description = "Install Cap from its official macOS DMG (or preview with --dry-run)"
@@ -204,6 +214,7 @@ if [ "$(uname -s)" = "Darwin" ]; then
 
   "$config_dir/scripts/install-cap"
   "$config_dir/scripts/configure-dock"
+  /usr/bin/swift "$config_dir/scripts/configure-profile-photo.swift"
 fi
 '''
 
@@ -215,6 +226,8 @@ cd "$HOME/.config/mise"
 shellcheck bootstrap.sh scripts/configure-dock scripts/install-cap
 shfmt -d bootstrap.sh scripts/configure-dock scripts/install-cap
 bash -n bin/mise
+/usr/bin/swiftc -typecheck scripts/configure-profile-photo.swift
+xcrun swift-format lint --strict scripts/configure-profile-photo.swift
 node --check scripts/install-ui-skills.mjs
 node --test tests/install-ui-skills.test.mjs
 node scripts/check-private-skills.mjs
@@ -228,6 +241,7 @@ fi
 mise bootstrap plan
 mise bootstrap dotfiles diff
 ./scripts/install-cap --dry-run
+/usr/bin/swift "$PWD/scripts/configure-profile-photo.swift" --dry-run
 node scripts/install-ui-skills.mjs --dry-run
 '''
 
