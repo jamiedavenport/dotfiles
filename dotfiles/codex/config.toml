@@ -49,5 +49,23 @@ trust_level = "trusted"
 [projects."/Users/jamie/policystack"]
 trust_level = "trusted"
 
+[projects."/Users/jamie"]
+trust_level = "trusted"
+
+[projects."/Users/jamie/jamiedavenport.me"]
+trust_level = "trusted"
+
+[projects."/Users/jamie/cv"]
+trust_level = "trusted"
+
+[projects."/Users/jamie/htmd"]
+trust_level = "trusted"
+
+[projects."/Users/jamie/shipwright"]
+trust_level = "trusted"
+
+[projects."/Users/jamie/distill"]
+trust_level = "trusted"
+
 [tui.model_availability_nux]
 gpt-6-astra = 4

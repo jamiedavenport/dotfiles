@@ -9,3 +9,9 @@ provider = "personal"
 value = "op://Personal/ui.sh/Token"
 env = "exec"
 if_missing = "error"
+
+[profiles.aiforui.secrets.AIFORUI_TOKEN]
+provider = "personal"
+value = "op://Personal/aiforui.dev/Token"
+env = "exec"
+if_missing = "error"

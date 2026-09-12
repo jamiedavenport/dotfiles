@@ -124,6 +124,16 @@ fi
 node "$config_dir/scripts/install-ui-skills.mjs" --update
 '''
 
+[tasks."skills:aiforui"]
+description = "Install or update all owned aiforui skills globally (or preview with --dry-run)"
+run = '''
+config_dir="$PWD"
+if [ ! -f "$config_dir/scripts/install-aiforui-skills.mjs" ]; then
+  config_dir="$HOME/.config/mise"
+fi
+node "$config_dir/scripts/install-aiforui-skills.mjs"
+'''
+
 [tasks.profile-photo]
 description = "Set the macOS account photo (or preview with --dry-run)"
 run = '''
@@ -230,6 +240,8 @@ bash -n bin/mise
 xcrun swift-format lint --strict scripts/configure-profile-photo.swift
 node --check scripts/install-ui-skills.mjs
 node --test tests/install-ui-skills.test.mjs
+node --check scripts/install-aiforui-skills.mjs
+node --test tests/install-aiforui-skills.test.mjs
 node scripts/check-private-skills.mjs
 
 config_file=$(mise config ls | awk '$1 ~ /config\.toml$/ { print $1; exit }')
@@ -243,6 +255,7 @@ mise bootstrap dotfiles diff
 ./scripts/install-cap --dry-run
 /usr/bin/swift "$PWD/scripts/configure-profile-photo.swift" --dry-run
 node scripts/install-ui-skills.mjs --dry-run
+node scripts/install-aiforui-skills.mjs --dry-run
 '''
 
 # ---------------------------------------------------------------------------

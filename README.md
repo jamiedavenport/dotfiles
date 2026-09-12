@@ -109,6 +109,32 @@ Documentation was checked through Context7 IDs `/jdx/mise` (requested mise
 `2026.9.1` compatibility) and `/jdx/fnox`, plus fnox `1.35.1` documentation and
 ui.sh installer `0.2.0` CLI help.
 
+### aiforui skills
+
+Store your aiforui.dev install token in the `Token` field of the `aiforui.dev`
+item in your `Personal` vault (`op://Personal/aiforui.dev/Token`). With the
+1Password CLI integration enabled, preview and install globally:
+
+```sh
+./bin/mise run skills:aiforui -- --dry-run
+./bin/mise run skills:aiforui
+```
+
+This uses the isolated `aiforui` profile in `fnox.toml`, following the ui.sh
+authentication pattern. The task runs `@aiforui/install@0.1.4` with `--yes
+--global`, installing everything you own with its original name for every
+supported agent detected by the CLI. Codex skills go into `~/.codex/skills/`;
+other agents use their own global locations. Run the same task to update.
+The vendor installer replaces existing skill files, so keep any local
+customizations separately. Its summary is best effort and does not guarantee
+that every file was written successfully.
+
+The preview does not authenticate, download, or change files. The token stays
+out of configuration and normal shell startup. As with ui.sh, the CLI receives
+the token as a process argument; npm debug logs are disabled. Commercial skill
+content stays outside this repository. Context7 had no matching package docs;
+the options and destinations were checked against the published CLI source.
+
 ### Context7 access
 
 Codex uses the hosted Context7 MCP server for current third-party library and
