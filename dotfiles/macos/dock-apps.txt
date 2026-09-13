@@ -6,6 +6,7 @@
 /Applications/Cap.app
 /Applications/Vimcal.app
 /Applications/Notion.app
+/Applications/Granola.app
 /Applications/WhatsApp.app
 /Applications/TIDAL.app
 /Applications/Buzz.app
