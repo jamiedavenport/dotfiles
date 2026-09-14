@@ -4,7 +4,7 @@
 /Applications/Grok Bot.app
 /Applications/Ghostty.app
 /Applications/Cap.app
-/Applications/Vimcal.app
+/Applications/Notion Calendar.app
 /Applications/Notion.app
 /Applications/Granola.app
 /Applications/WhatsApp.app
