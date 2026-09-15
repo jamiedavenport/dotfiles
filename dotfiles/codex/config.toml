@@ -26,6 +26,11 @@ auth = "oauth"
 enabled = true
 enabled_tools = ["resolve-library-id", "query-docs"]
 
+[mcp_servers.notion]
+url = "https://mcp.notion.com/mcp"
+auth = "oauth"
+enabled = true
+
 [mcp_servers.sidequest]
 url = "https://sdqst.app/mcp"
 auth = "oauth"
