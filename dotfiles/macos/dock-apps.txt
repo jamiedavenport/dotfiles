@@ -6,6 +6,7 @@
 /Applications/Cap.app
 /Applications/Notion Calendar.app
 /Applications/Notion.app
+/Applications/Linear.app
 /Applications/Granola.app
 /Applications/WhatsApp.app
 /Applications/TIDAL.app

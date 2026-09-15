@@ -55,6 +55,7 @@ shfmt = "latest"
 "brew-cask:thebrowsercompany-dia" = { os = "macos/arm64" }
 "brew-cask:notion-calendar" = { os = "macos" }
 "brew-cask:notion" = { os = "macos" }
+"brew-cask:linear" = { os = "macos" }
 "brew-cask:granola" = { os = "macos" }
 "brew-cask:whatsapp" = { os = "macos" }
 "brew-cask:tidal" = { os = "macos" }
