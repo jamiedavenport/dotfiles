@@ -82,5 +82,17 @@ trust_level = "trusted"
 [projects."/Users/jamie/distill"]
 trust_level = "trusted"
 
+[projects."/Users/jamie/distill/distill"]
+trust_level = "trusted"
+
+[projects."/Users/jamie/distill/app"]
+trust_level = "trusted"
+
+[projects."/Users/jamie/distill/www"]
+trust_level = "trusted"
+
 [tui.model_availability_nux]
 gpt-6-astra = 4
+
+[notice]
+hide_rate_limit_model_nudge = true

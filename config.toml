@@ -57,6 +57,7 @@ shfmt = "latest"
 "brew-cask:notion" = { os = "macos" }
 "brew-cask:linear" = { os = "macos" }
 "brew-cask:granola" = { os = "macos" }
+"brew-cask:slack" = { os = "macos" }
 "brew-cask:whatsapp" = { os = "macos" }
 "brew-cask:tidal" = { os = "macos" }
 "brew-cask:block-buzz" = { os = "macos" }
