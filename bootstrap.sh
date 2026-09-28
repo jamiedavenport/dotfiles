@@ -27,5 +27,4 @@ mv "$installer_tmp_dir/mise" "$HOME/.local/bin/mise"
 
 printf '\n%s\n' \
 	"Initial bootstrap complete." \
-	"Open a new terminal, configure GitHub SSH access, then run: mise bootstrap" \
-	"Jamie: sign into 1Password, enable CLI integration, then run: mise run bootstrap:jamie"
+	"Open a new terminal, configure GitHub SSH access, then run: mise bootstrap"

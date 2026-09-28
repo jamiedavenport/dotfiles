@@ -7,7 +7,7 @@ mise.local.lock
 mise.*.local.toml
 mise.*.local.lock
 
-# Personal secret overrides and commercial skill downloads must stay local.
+# Personal secret overrides and private skill content must stay local.
 fnox.local.toml
 fnox.*.local.toml
 .fnox.local.toml

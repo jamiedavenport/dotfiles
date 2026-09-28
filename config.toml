@@ -12,7 +12,7 @@ codex = "latest"
 uv = "latest"
 "pipx:htomd" = { version = "0.1.0", uvx_args = "--python 3.14" }
 
-# Personal bootstrap dependencies. Credentials are resolved only by fnox exec.
+# Additional developer tools.
 node = "24.20.0"
 fnox = "1.35.1"
 "aqua:1password/cli" = "2.39.0"
@@ -110,36 +110,6 @@ shfmt = "latest"
 [tasks."dns:cloudflare"]
 description = "Use Cloudflare DNS on Wi-Fi"
 run = 'networksetup -setdnsservers "Wi-Fi" 1.1.1.1 1.0.0.1'
-
-[tasks."bootstrap:jamie"]
-description = "Install Jamie's private ui.sh skills (or preview with --dry-run)"
-run = '''
-config_dir="$PWD"
-if [ ! -f "$config_dir/scripts/install-ui-skills.mjs" ]; then
-  config_dir="$HOME/.config/mise"
-fi
-node "$config_dir/scripts/install-ui-skills.mjs"
-'''
-
-[tasks."skills:update"]
-description = "Download and update privately installed ui.sh skills"
-run = '''
-config_dir="$PWD"
-if [ ! -f "$config_dir/scripts/install-ui-skills.mjs" ]; then
-  config_dir="$HOME/.config/mise"
-fi
-node "$config_dir/scripts/install-ui-skills.mjs" --update
-'''
-
-[tasks."skills:aiforui"]
-description = "Install or update all owned aiforui skills globally (or preview with --dry-run)"
-run = '''
-config_dir="$PWD"
-if [ ! -f "$config_dir/scripts/install-aiforui-skills.mjs" ]; then
-  config_dir="$HOME/.config/mise"
-fi
-node "$config_dir/scripts/install-aiforui-skills.mjs"
-'''
 
 [tasks.profile-photo]
 description = "Set the macOS account photo (or preview with --dry-run)"
@@ -245,10 +215,6 @@ shfmt -d bootstrap.sh scripts/configure-dock scripts/install-cap
 bash -n bin/mise
 /usr/bin/swiftc -typecheck scripts/configure-profile-photo.swift
 xcrun swift-format lint --strict scripts/configure-profile-photo.swift
-node --check scripts/install-ui-skills.mjs
-node --test tests/install-ui-skills.test.mjs
-node --check scripts/install-aiforui-skills.mjs
-node --test tests/install-aiforui-skills.test.mjs
 node scripts/check-private-skills.mjs
 
 config_file=$(mise config ls | awk '$1 ~ /config\.toml$/ { print $1; exit }')
@@ -261,8 +227,6 @@ mise bootstrap plan
 mise bootstrap dotfiles diff
 ./scripts/install-cap --dry-run
 /usr/bin/swift "$PWD/scripts/configure-profile-photo.swift" --dry-run
-node scripts/install-ui-skills.mjs --dry-run
-node scripts/install-aiforui-skills.mjs --dry-run
 '''
 
 # ---------------------------------------------------------------------------
