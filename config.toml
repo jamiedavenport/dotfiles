@@ -46,7 +46,6 @@ shfmt = "latest"
 
 "brew-cask:ghostty" = { os = "macos" }
 "brew-cask:cursor" = { os = "macos" }
-"brew-cask:emdash" = { os = "macos" }
 "brew-cask:tldraw" = { os = "macos" }
 "brew-cask:cursor-cli" = { os = "macos" }
 "brew-cask:1password" = { os = "macos" }

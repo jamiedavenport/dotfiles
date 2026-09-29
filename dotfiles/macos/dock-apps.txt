@@ -1,7 +1,6 @@
 # Applications appear in this order between Finder and the Dock separator.
 /Applications/Dia.app
 /Applications/Cursor.app
-/Applications/Emdash.app
 /Applications/Grok Bot.app
 /Applications/Ghostty.app
 /Applications/Cap.app
