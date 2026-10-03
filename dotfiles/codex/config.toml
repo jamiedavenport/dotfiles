@@ -1,5 +1,5 @@
-model = "gpt-6-astra"
-model_reasoning_effort = "high"
+model = "gpt-6-sol"
+model_reasoning_effort = "medium"
 approval_policy = "never"
 sandbox_mode = "danger-full-access"
 check_for_update_on_startup = false
@@ -25,6 +25,10 @@ url = "https://mcp.context7.com/mcp/oauth"
 auth = "oauth"
 enabled = true
 enabled_tools = ["resolve-library-id", "query-docs"]
+
+[mcp_servers.distill]
+url = "https://app.distill.review/mcp"
+enabled = true
 
 [mcp_servers.linear]
 url = "https://mcp.linear.app/mcp"
@@ -90,6 +94,9 @@ trust_level = "trusted"
 
 [projects."/Users/jamie/distill/www"]
 trust_level = "trusted"
+
+[tui]
+screen_reader_detection_done = true
 
 [tui.model_availability_nux]
 gpt-6-astra = 4
