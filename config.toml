@@ -9,6 +9,7 @@ minimum_release_age_excludes = ["codex"]
 [tools]
 github-cli = "latest"
 codex = "latest"
+claude = "latest"
 uv = "latest"
 "pipx:htomd" = { version = "0.1.0", uvx_args = "--python 3.14" }
 
