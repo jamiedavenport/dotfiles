@@ -133,6 +133,17 @@ fi
 "$config_dir/scripts/install-cap"
 '''
 
+# Conductor's cask also uses an extensionless tar.gz archive.
+[tasks.install-conductor]
+description = "Install Conductor from its official archive (or preview with --dry-run)"
+run = '''
+config_dir="$PWD"
+if [ ! -x "$config_dir/scripts/install-conductor" ]; then
+  config_dir="$HOME/.config/mise"
+fi
+"$config_dir/scripts/install-conductor"
+'''
+
 [tasks.bootstrap]
 description = "Configure the developer workstation"
 run = '''
@@ -201,6 +212,7 @@ if [ "$(uname -s)" = "Darwin" ]; then
     done
 
   "$config_dir/scripts/install-cap"
+  "$config_dir/scripts/install-conductor"
   "$config_dir/scripts/configure-dock"
   /usr/bin/swift "$config_dir/scripts/configure-profile-photo.swift"
 fi
@@ -211,8 +223,8 @@ description = "Validate the configuration without changing the workstation"
 run = '''
 cd "$HOME/.config/mise"
 
-shellcheck bootstrap.sh scripts/configure-dock scripts/install-cap
-shfmt -d bootstrap.sh scripts/configure-dock scripts/install-cap
+shellcheck bootstrap.sh scripts/configure-dock scripts/install-cap scripts/install-conductor
+shfmt -d bootstrap.sh scripts/configure-dock scripts/install-cap scripts/install-conductor
 bash -n bin/mise
 /usr/bin/swiftc -typecheck scripts/configure-profile-photo.swift
 xcrun swift-format lint --strict scripts/configure-profile-photo.swift
@@ -227,6 +239,7 @@ fi
 mise bootstrap plan
 mise bootstrap dotfiles diff
 ./scripts/install-cap --dry-run
+./scripts/install-conductor --dry-run
 /usr/bin/swift "$PWD/scripts/configure-profile-photo.swift" --dry-run
 '''
 

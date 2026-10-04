@@ -1,0 +1,99 @@
+#!/bin/sh
+set -eu
+
+case "${1:-}" in
+--dry-run) dry_run=true ;;
+"") dry_run=false ;;
+*)
+	echo "Usage: $0 [--dry-run]" >&2
+	exit 1
+	;;
+esac
+
+if [ "$(uname -s)" != "Darwin" ]; then
+	exit 0
+fi
+
+app_path=/Applications/Conductor.app
+if [ -e "$app_path" ] || [ -L "$app_path" ]; then
+	if [ -d "$app_path" ] &&
+		[ "$(/usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' "$app_path/Contents/Info.plist" 2>/dev/null || true)" = "com.conductor.app" ]; then
+		echo "Conductor is already installed; updates are managed by the app."
+		exit 0
+	fi
+	echo "Cannot install Conductor: $app_path exists but is not a Conductor app bundle." >&2
+	exit 1
+fi
+
+# Detect Apple Silicon even when bootstrap runs through Rosetta.
+if [ "$(sysctl -n hw.optional.arm64 2>/dev/null || true)" = "1" ]; then
+	platform=apple-silicon
+else
+	case "$(uname -m)" in
+	arm64) platform=apple-silicon ;;
+	x86_64) platform=intel ;;
+	*)
+		echo "Unsupported Mac architecture: $(uname -m)" >&2
+		exit 1
+		;;
+	esac
+fi
+
+# Conductor 0.90.1 artifacts and SHA-256 checksums from Homebrew's cask metadata.
+# The app manages subsequent updates. Explicit .tar.gz naming works around mise's
+# inability to unpack the extensionless upstream archive.
+case "$platform" in
+apple-silicon)
+	asset=01M3Z9ZJ0YEHE1W3R621JXE953
+	sha256=10e6c34f9a76934365ce9294b5effae2dd75ee1b013d269722bcc19e7abe94d5
+	;;
+intel)
+	asset=01M3Z9ZPQ3M4N8R6QCBWQGR7J5
+	sha256=3574bf45ccb1df7675dbb0b49de0cd6152831f1a2d84e9436daef13a62a2c083
+	;;
+esac
+download_url="https://cdn.crabnebula.app/asset/$asset"
+if [ "$dry_run" = true ]; then
+	echo "Install Conductor from $download_url to $app_path"
+	exit 0
+fi
+
+install_command() {
+	if [ -w /Applications ]; then
+		"$@"
+	else
+		sudo "$@"
+	fi
+}
+
+conductor_tmp_dir=$(mktemp -d)
+conductor_stage_dir=''
+cleanup() {
+	if [ -n "$conductor_stage_dir" ]; then
+		install_command rm -rf "$conductor_stage_dir"
+	fi
+	rm -rf "$conductor_tmp_dir"
+}
+trap cleanup EXIT
+trap 'exit 130' INT
+trap 'exit 143' HUP TERM
+
+echo "Downloading Conductor for $platform..."
+curl --fail --location --silent --show-error --retry 3 \
+	--proto '=https' --proto-redir '=https' \
+	"$download_url" -o "$conductor_tmp_dir/Conductor.tar.gz"
+printf '%s  %s\n' "$sha256" "$conductor_tmp_dir/Conductor.tar.gz" | shasum -a 256 -c -
+tar -xzf "$conductor_tmp_dir/Conductor.tar.gz" -C "$conductor_tmp_dir"
+source_app="$conductor_tmp_dir/Conductor.app"
+if [ "$(/usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' "$source_app/Contents/Info.plist")" != "com.conductor.app" ]; then
+	echo "The downloaded archive does not contain the expected Conductor app." >&2
+	exit 1
+fi
+codesign --verify --deep --strict "$source_app"
+spctl --assess --type execute "$source_app"
+
+# Finish copying on the destination filesystem before exposing the app.
+conductor_stage_dir=$(install_command mktemp -d /Applications/.conductor-install.XXXXXX)
+install_command ditto "$source_app" "$conductor_stage_dir/Conductor.app"
+install_command mv -n "$conductor_stage_dir/Conductor.app" /Applications/
+echo "Conductor installed at $app_path"
