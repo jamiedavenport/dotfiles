@@ -40,6 +40,11 @@ url = "https://mcp.notion.com/mcp"
 auth = "oauth"
 enabled = true
 
+[mcp_servers.sentry]
+url = "https://mcp.sentry.dev/mcp"
+auth = "oauth"
+enabled = true
+
 [mcp_servers.sidequest]
 url = "https://sdqst.app/mcp"
 auth = "oauth"
