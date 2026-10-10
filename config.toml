@@ -18,6 +18,9 @@ node = "24.20.0"
 fnox = "1.35.1"
 "aqua:1password/cli" = "2.39.0"
 
+# Local MCP gateway: holds OAuth tokens once for every coding agent.
+"github:tbxark/mcp-proxy" = "1.1.0"
+
 ripgrep = "latest"
 fd = "latest"
 fzf = "latest"
@@ -109,6 +112,12 @@ shfmt = "latest"
 # Shared global instructions for every coding agent.
 "~/.codex/AGENTS.md" = { source = "dotfiles/agents/AGENTS.md", mode = "symlink" }
 "~/.claude/CLAUDE.md" = { source = "dotfiles/agents/AGENTS.md", mode = "symlink" }
+
+# Shared MCP gateway. Agents connect to http://localhost:9090/<server>/mcp.
+# OAuth tokens live in ~/Library/Application Support/mcp-proxy/oauth, outside this repo.
+"~/.config/mcp-proxy/config.json" = { source = "dotfiles/mcp-proxy/config.json", mode = "symlink" }
+# launchd may not follow symlinked agents at login, so copy the plist.
+"~/Library/LaunchAgents/local.mcp-proxy.plist" = { source = "dotfiles/mcp-proxy/local.mcp-proxy.plist", mode = "copy" }
 
 # ---------------------------------------------------------------------------
 # Bootstrap tasks

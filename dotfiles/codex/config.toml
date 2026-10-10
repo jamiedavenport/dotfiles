@@ -10,24 +10,31 @@ service_tier = "fast"
 [shell_environment_policy]
 ignore_default_excludes = false
 
+# Served by the local mcp-proxy gateway (dotfiles/mcp-proxy), which holds the OAuth tokens.
 [mcp_servers.axiom]
-url = "https://mcp.axiom.co/mcp"
+url = "http://localhost:9090/axiom/mcp"
 
 [mcp_servers.calcom]
-url = "https://mcp.cal.com/mcp"
+url = "http://localhost:9090/calcom/mcp"
 
 [mcp_servers.context7]
-url = "https://mcp.context7.com/mcp/oauth"
-enabled_tools = ["resolve-library-id", "query-docs"]
+url = "http://localhost:9090/context7/mcp"
 
-[mcp_servers.distill]
-url = "https://app.distill.review/mcp"
+[mcp_servers.granola]
+url = "http://localhost:9090/granola/mcp"
 
 [mcp_servers.linear]
-url = "https://mcp.linear.app/mcp"
+url = "http://localhost:9090/linear/mcp"
+
+[mcp_servers.mobbin]
+url = "http://localhost:9090/mobbin/mcp"
 
 [mcp_servers.notion]
-url = "https://mcp.notion.com/mcp"
+url = "http://localhost:9090/notion/mcp"
+
+# Direct: mcp-proxy cannot decode Distill's token response yet.
+[mcp_servers.distill]
+url = "https://app.distill.review/mcp"
 
 [mcp_servers.sidequest]
 url = "https://sdqst.app/mcp"
@@ -46,7 +53,7 @@ command = "npx"
 args = ["-y", "agentation-mcp", "server"]
 
 [mcp_servers.sentry]
-url = "https://mcp.sentry.dev/mcp"
+url = "http://localhost:9090/sentry/mcp"
 
 [projects."/Users/jamie/.config/mise"]
 trust_level = "trusted"

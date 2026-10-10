@@ -1,0 +1,76 @@
+{
+  "mcpProxy": {
+    "baseURL": "http://localhost:9090",
+    "addr": "127.0.0.1:9090",
+    "name": "MCP Proxy",
+    "version": "1.0.0",
+    "type": "streamable-http",
+    "options": {
+      "panicIfInvalid": false,
+      "logEnabled": true,
+      "autoReconnect": true
+    }
+  },
+  "mcpServers": {
+    "axiom": {
+      "url": "https://mcp.axiom.co/mcp",
+      "transportType": "streamable-http",
+      "oauth": {}
+    },
+    "calcom": {
+      "url": "https://mcp.cal.com/mcp",
+      "transportType": "streamable-http",
+      "oauth": {}
+    },
+    "context7": {
+      "url": "https://mcp.context7.com/mcp/oauth",
+      "transportType": "streamable-http",
+      "oauth": {},
+      "options": {
+        "toolFilter": {
+          "mode": "allow",
+          "list": [
+            "resolve-library-id",
+            "query-docs"
+          ]
+        }
+      }
+    },
+    "distill": {
+      "url": "https://app.distill.review/mcp",
+      "transportType": "streamable-http",
+      "oauth": {
+        "clientId": "kZoVnTXblcMspdalBgKPEbXUzTtltpOX",
+        "redirectUri": "http://127.0.0.1:8090/oauth/callback"
+      },
+      "options": {
+        "disabled": true
+      }
+    },
+    "granola": {
+      "url": "https://mcp.granola.ai/mcp",
+      "transportType": "streamable-http",
+      "oauth": {}
+    },
+    "linear": {
+      "url": "https://mcp.linear.app/mcp",
+      "transportType": "streamable-http",
+      "oauth": {}
+    },
+    "mobbin": {
+      "url": "https://api.mobbin.com/mcp",
+      "transportType": "streamable-http",
+      "oauth": {}
+    },
+    "notion": {
+      "url": "https://mcp.notion.com/mcp",
+      "transportType": "streamable-http",
+      "oauth": {}
+    },
+    "sentry": {
+      "url": "https://mcp.sentry.dev/mcp",
+      "transportType": "streamable-http",
+      "oauth": {}
+    }
+  }
+}
