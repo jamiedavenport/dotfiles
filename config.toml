@@ -103,7 +103,10 @@ shfmt = "latest"
 "~/.cursor/mcp.json" = { source = "dotfiles/cursor/mcp.json", mode = "copy" }
 
 "~/.codex/config.toml" = { source = "dotfiles/codex/config.toml", mode = "symlink" }
-"~/.codex/AGENTS.md" = { source = "dotfiles/codex/AGENTS.md", mode = "symlink" }
+
+# Shared global instructions for every coding agent.
+"~/.codex/AGENTS.md" = { source = "dotfiles/agents/AGENTS.md", mode = "symlink" }
+"~/.claude/CLAUDE.md" = { source = "dotfiles/agents/AGENTS.md", mode = "symlink" }
 
 # ---------------------------------------------------------------------------
 # Bootstrap tasks
