@@ -73,6 +73,7 @@ shfmt = "latest"
 # ---------------------------------------------------------------------------
 
 [bootstrap.repos]
+"~/auvia" = { url = "git@github.com:Auvia-io/auvia.git" }
 "~/capd" = { url = "git@github.com:jamiedavenport/capd.git" }
 "~/jamiedavenport" = { url = "git@github.com:jamiedavenport/jamiedavenport.git" }
 "~/policystack" = { url = "git@github.com:jamiedavenport/policystack.git" }
