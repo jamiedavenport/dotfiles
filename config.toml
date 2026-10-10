@@ -102,7 +102,9 @@ shfmt = "latest"
 "~/.cursor/cli-config.json" = { source = "dotfiles/cursor/cli-config.json", mode = "copy" }
 "~/.cursor/mcp.json" = { source = "dotfiles/cursor/mcp.json", mode = "copy" }
 
-"~/.codex/config.toml" = { source = "dotfiles/codex/config.toml", mode = "symlink" }
+# Codex and the apps that hook into it replace this file atomically, which
+# breaks a symlink. Copy it, like the Cursor files, and capture later changes.
+"~/.codex/config.toml" = { source = "dotfiles/codex/config.toml", mode = "copy" }
 
 # Shared global instructions for every coding agent.
 "~/.codex/AGENTS.md" = { source = "dotfiles/agents/AGENTS.md", mode = "symlink" }

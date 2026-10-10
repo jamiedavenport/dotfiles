@@ -1,4 +1,4 @@
-model = "gpt-6-sol"
+model = "gpt-6-astra"
 model_reasoning_effort = "medium"
 approval_policy = "never"
 sandbox_mode = "danger-full-access"
@@ -12,57 +12,41 @@ ignore_default_excludes = false
 
 [mcp_servers.axiom]
 url = "https://mcp.axiom.co/mcp"
-auth = "oauth"
-enabled = true
 
 [mcp_servers.calcom]
 url = "https://mcp.cal.com/mcp"
-auth = "oauth"
-enabled = true
 
 [mcp_servers.context7]
 url = "https://mcp.context7.com/mcp/oauth"
-auth = "oauth"
-enabled = true
 enabled_tools = ["resolve-library-id", "query-docs"]
 
 [mcp_servers.distill]
 url = "https://app.distill.review/mcp"
-enabled = true
 
 [mcp_servers.linear]
 url = "https://mcp.linear.app/mcp"
-auth = "oauth"
-enabled = true
 
 [mcp_servers.notion]
 url = "https://mcp.notion.com/mcp"
-auth = "oauth"
-enabled = true
-
-[mcp_servers.sentry]
-url = "https://mcp.sentry.dev/mcp"
-auth = "oauth"
-enabled = true
 
 [mcp_servers.sidequest]
 url = "https://sdqst.app/mcp"
-auth = "oauth"
-enabled = true
 
 [mcp_servers.paper]
 url = "http://127.0.0.1:29979/mcp"
-enabled = true
 
 [mcp_servers.polar]
 url = "https://mcp.polar.sh/mcp/polar-mcp"
-auth = "oauth"
-enabled = true
 
 [mcp_servers.polar-sandbox]
 url = "https://mcp.polar.sh/mcp/polar-sandbox"
-auth = "oauth"
-enabled = true
+
+[mcp_servers.agentation]
+command = "npx"
+args = ["-y", "agentation-mcp", "server"]
+
+[mcp_servers.sentry]
+url = "https://mcp.sentry.dev/mcp"
 
 [projects."/Users/jamie/.config/mise"]
 trust_level = "trusted"
@@ -105,6 +89,36 @@ screen_reader_detection_done = true
 
 [tui.model_availability_nux]
 gpt-6-astra = 4
+"gpt-6.1-sol" = 4
 
 [notice]
 hide_rate_limit_model_nudge = true
+
+[[hooks.Stop]]
+[[hooks.Stop.hooks]]
+type = "command"
+command = "EMDASH_HOOK_CONFIG_VERSION=1; if [ -z \"${EMDASH_HOOK_PORT:-}\" ] || [ -z \"${EMDASH_HOOK_NONCE:-}\" ] || [ -z \"${EMDASH_PTY_ID:-}\" ]; then exit 0; fi; curl -sf -X POST -H \"Content-Type: application/json\" -H \"X-Emdash-Token: $EMDASH_HOOK_NONCE\" -H \"X-Emdash-Pty-Id: $EMDASH_PTY_ID\" -H \"X-Emdash-Event-Type: notification\" --data-binary '{\"notification_type\":\"idle_prompt\"}' \"http://127.0.0.1:$EMDASH_HOOK_PORT/hook\" || true"
+
+[[hooks.PermissionRequest]]
+[[hooks.PermissionRequest.hooks]]
+type = "command"
+command = "EMDASH_HOOK_CONFIG_VERSION=1; if [ -z \"${EMDASH_HOOK_PORT:-}\" ] || [ -z \"${EMDASH_HOOK_NONCE:-}\" ] || [ -z \"${EMDASH_PTY_ID:-}\" ]; then exit 0; fi; curl -sf -X POST -H \"Content-Type: application/json\" -H \"X-Emdash-Token: $EMDASH_HOOK_NONCE\" -H \"X-Emdash-Pty-Id: $EMDASH_PTY_ID\" -H \"X-Emdash-Event-Type: notification\" --data-binary '{\"notification_type\":\"permission_prompt\"}' \"http://127.0.0.1:$EMDASH_HOOK_PORT/hook\" || true"
+
+[[hooks.SessionStart]]
+[[hooks.SessionStart.hooks]]
+type = "command"
+command = "INPUT=\"${1:-$(cat)}\"; printf '%s' \"$INPUT\" | { EMDASH_HOOK_CONFIG_VERSION=1; if [ -z \"${EMDASH_HOOK_PORT:-}\" ] || [ -z \"${EMDASH_HOOK_NONCE:-}\" ] || [ -z \"${EMDASH_PTY_ID:-}\" ]; then exit 0; fi; curl -sf -X POST -H \"Content-Type: application/json\" -H \"X-Emdash-Token: $EMDASH_HOOK_NONCE\" -H \"X-Emdash-Pty-Id: $EMDASH_PTY_ID\" -H \"X-Emdash-Event-Type: session-start\" -d @- \"http://127.0.0.1:$EMDASH_HOOK_PORT/hook\" || true; }"
+
+[hooks.state]
+
+[hooks.state."/Users/jamie/.codex/config.toml:permission_request:0:0"]
+trusted_hash = "sha256:ccf0467f85fc0a9457b7cabc4d28e20bb89251aa7deceb9602165ad8ce3314d3"
+
+[hooks.state."/Users/jamie/.codex/config.toml:session_start:0:0"]
+trusted_hash = "sha256:d6db1e47b489fc9cdaa74d07e965b069880372d7920eb79fabe87c86961b91af"
+
+[hooks.state."/Users/jamie/.codex/config.toml:stop:0:0"]
+trusted_hash = "sha256:cd0471cbdace6a9137ba1699388292eaeedf6222ad1cb562f79b51f0724e6343"
+
+[hooks.state."/Users/jamie/.codex/hooks.json:subagent_start:0:0"]
+trusted_hash = "sha256:4ffaf86b4e2745a62ff325f581ef00e86ea04dc61ddacaecb3a9de1c1afa802f"

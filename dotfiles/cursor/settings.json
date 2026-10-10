@@ -85,9 +85,6 @@
     "workbench.activityBar.location": "hidden",
     "workbench.view.alwaysShowHeaderActions": false,
     "workbench.activityBar.orientation": "vertical",
-    
-    // Hide the bottom bar entirely
-    "workbench.statusBar.visible": false,
 
     // Hide back / forward arrows in the title bar
     "workbench.navigationControl.enabled": false,
@@ -95,4 +92,5 @@
     "terminal.integrated.tabs.hideCondition": "singleTerminal",
     "terminal.integrated.tabs.showActiveTerminal": "never",
     "terminal.integrated.tabs.showActions": "never",
+    "workbench.statusBar.visible": false,
 }
