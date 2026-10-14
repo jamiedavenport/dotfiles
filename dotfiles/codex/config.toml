@@ -11,6 +11,9 @@ service_tier = "fast"
 ignore_default_excludes = false
 
 # Served by the local mcp-proxy gateway (dotfiles/mcp-proxy), which holds the OAuth tokens.
+[mcp_servers.arxivv]
+url = "http://localhost:9090/arxivv/mcp"
+
 [mcp_servers.axiom]
 url = "http://localhost:9090/axiom/mcp"
 

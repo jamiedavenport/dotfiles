@@ -12,6 +12,10 @@
     }
   },
   "mcpServers": {
+    "arxivv": {
+      "url": "https://mcp.arxivv.org/mcp",
+      "transportType": "streamable-http"
+    },
     "axiom": {
       "url": "https://mcp.axiom.co/mcp",
       "transportType": "streamable-http",
