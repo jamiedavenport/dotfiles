@@ -76,6 +76,7 @@ shfmt = "latest"
 # ---------------------------------------------------------------------------
 
 [bootstrap.repos]
+"~/arxivv.org" = { url = "git@github.com:jamiedavenport/arxivv.org.git" }
 "~/auvia" = { url = "git@github.com:Auvia-io/auvia.git" }
 "~/capd" = { url = "git@github.com:jamiedavenport/capd.git" }
 "~/jamiedavenport" = { url = "git@github.com:jamiedavenport/jamiedavenport.git" }
