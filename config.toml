@@ -51,6 +51,10 @@ xcodes = "latest"
 "brew:zsh-autosuggestions" = { os = "macos" }
 "brew:zsh-syntax-highlighting" = { os = "macos" }
 
+# Tauri iOS tooling: `tauri ios init` probes for `pod` and `idevicesyslog`.
+"brew:cocoapods" = { os = "macos" }
+"brew:libimobiledevice" = { os = "macos" }
+
 "brew-cask:ghostty" = { os = "macos" }
 "brew-cask:cursor" = { os = "macos" }
 "brew-cask:tldraw" = { os = "macos" }
