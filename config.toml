@@ -35,6 +35,9 @@ starship = "latest"
 shellcheck = "latest"
 shfmt = "latest"
 
+# Installs the Xcode version pinned by scripts/install-xcode.
+xcodes = "latest"
+
 # ---------------------------------------------------------------------------
 # Native macOS packages
 #
@@ -160,6 +163,28 @@ fi
 "$config_dir/scripts/install-conductor"
 '''
 
+# capd builds need full Xcode; the Command Line Tools are not enough.
+[tasks.install-xcode]
+description = "Install and select the Xcode version capd builds with (or preview with --dry-run)"
+run = '''
+config_dir="$PWD"
+if [ ! -x "$config_dir/scripts/install-xcode" ]; then
+  config_dir="$HOME/.config/mise"
+fi
+"$config_dir/scripts/install-xcode"
+'''
+
+# capd installs from its unreleased origin/main rather than a release.
+[tasks.install-capd]
+description = "Build and install capd from origin/main (or preview with --dry-run)"
+run = '''
+config_dir="$PWD"
+if [ ! -x "$config_dir/scripts/install-capd" ]; then
+  config_dir="$HOME/.config/mise"
+fi
+"$config_dir/scripts/install-capd"
+'''
+
 [tasks.bootstrap]
 description = "Configure the developer workstation"
 run = '''
@@ -239,8 +264,8 @@ description = "Validate the configuration without changing the workstation"
 run = '''
 cd "$HOME/.config/mise"
 
-shellcheck bootstrap.sh scripts/configure-dock scripts/install-cap scripts/install-conductor
-shfmt -d bootstrap.sh scripts/configure-dock scripts/install-cap scripts/install-conductor
+shellcheck bootstrap.sh scripts/configure-dock scripts/install-cap scripts/install-capd scripts/install-conductor scripts/install-xcode
+shfmt -d bootstrap.sh scripts/configure-dock scripts/install-cap scripts/install-capd scripts/install-conductor scripts/install-xcode
 bash -n bin/mise
 /usr/bin/swiftc -typecheck scripts/configure-profile-photo.swift
 xcrun swift-format lint --strict scripts/configure-profile-photo.swift
@@ -255,7 +280,9 @@ fi
 mise bootstrap plan
 mise bootstrap dotfiles diff
 ./scripts/install-cap --dry-run
+./scripts/install-capd --dry-run
 ./scripts/install-conductor --dry-run
+./scripts/install-xcode --dry-run
 /usr/bin/swift "$PWD/scripts/configure-profile-photo.swift" --dry-run
 '''
 

@@ -1,0 +1,58 @@
+#!/bin/sh
+set -eu
+
+case "${1:-}" in
+--dry-run) dry_run=true ;;
+"") dry_run=false ;;
+*)
+	echo "Usage: $0 [--dry-run]" >&2
+	exit 1
+	;;
+esac
+
+if [ "$(uname -s)" != "Darwin" ]; then
+	exit 0
+fi
+
+# Matches the Xcode that capd's CI selects.
+version=26.3
+
+if ! command -v xcodes >/dev/null; then
+	echo "xcodes not found; run ./bin/mise install first." >&2
+	exit 1
+fi
+
+# xcodes reports a missing version on stdout, so only a real bundle counts.
+xcode_path=$(xcodes installed --no-color "$version" 2>/dev/null || true)
+if [ ! -d "$xcode_path" ]; then
+	if [ "$dry_run" = true ]; then
+		echo "Install Xcode $version with xcodes (requires Apple ID sign-in)"
+		echo "Select Xcode $version, accept its license, and run first-launch setup"
+		exit 0
+	fi
+	xcodes install "$version" --experimental-unxip --empty-trash
+	xcode_path=$(xcodes installed --no-color "$version")
+fi
+
+if [ "$(xcode-select -p)" != "$xcode_path/Contents/Developer" ]; then
+	if [ "$dry_run" = true ]; then
+		echo "Select $xcode_path as the active developer directory"
+	else
+		sudo xcode-select -s "$xcode_path"
+	fi
+fi
+
+if [ "$dry_run" = true ]; then
+	echo "Xcode $version is installed at $xcode_path"
+	exit 0
+fi
+
+if ! xcodebuild -license check >/dev/null 2>&1; then
+	sudo xcodebuild -license accept
+fi
+
+if ! xcodebuild -checkFirstLaunchStatus; then
+	sudo xcodebuild -runFirstLaunch
+fi
+
+echo "Xcode $version is installed and selected at $xcode_path"

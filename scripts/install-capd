@@ -1,0 +1,109 @@
+#!/bin/sh
+set -eu
+
+case "${1:-}" in
+--dry-run) dry_run=true ;;
+"") dry_run=false ;;
+*)
+	echo "Usage: $0 [--dry-run]" >&2
+	exit 1
+	;;
+esac
+
+if [ "$(uname -s)" != "Darwin" ]; then
+	exit 0
+fi
+
+repo="$HOME/capd"
+# A dedicated worktree keeps the installed build on origin/main whatever
+# branch the main checkout is on.
+worktree="$HOME/.local/share/capd-main"
+app_path=/Applications/capd.app
+bundle_id=dev.jxd.capd
+cli_link="$HOME/.local/bin/capd"
+
+if [ ! -d "$repo/.git" ]; then
+	echo "Cannot install capd: $repo is not a git checkout. Run ./bin/mise bootstrap first." >&2
+	exit 1
+fi
+
+if [ -e "$app_path" ] || [ -L "$app_path" ]; then
+	if [ ! -d "$app_path" ] ||
+		[ "$(/usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' "$app_path/Contents/Info.plist" 2>/dev/null || true)" != "$bundle_id" ]; then
+		echo "Cannot install capd: $app_path exists but is not a capd app bundle." >&2
+		exit 1
+	fi
+fi
+
+if [ "$dry_run" = true ]; then
+	echo "Fetch origin/main into $worktree"
+	echo "Build capd with $worktree/Scripts/package-app.sh"
+	echo "Install capd to $app_path and link $cli_link"
+	exit 0
+fi
+
+if ! xcodebuild -version >/dev/null 2>&1; then
+	echo "Cannot build capd: full Xcode is not selected. Run ./bin/mise run install-xcode first." >&2
+	exit 1
+fi
+
+git -C "$repo" fetch --quiet origin main
+if [ ! -e "$worktree/.git" ]; then
+	git -C "$repo" worktree prune
+	git -C "$repo" worktree add --quiet --detach "$worktree" origin/main
+else
+	git -C "$worktree" checkout --quiet --detach origin/main
+fi
+echo "Building capd $(git -C "$worktree" log -1 --format='%h %s')"
+
+"$worktree/Scripts/package-app.sh"
+source_app="$worktree/dist/capd.app"
+
+install_command() {
+	if [ -w /Applications ]; then
+		"$@"
+	else
+		sudo "$@"
+	fi
+}
+
+capd_stage_dir=''
+cleanup() {
+	if [ -n "$capd_stage_dir" ]; then
+		install_command rm -rf "$capd_stage_dir"
+	fi
+}
+trap cleanup EXIT
+trap 'exit 130' INT
+trap 'exit 143' HUP TERM
+
+# Finish copying on the destination filesystem before swapping the app.
+capd_stage_dir=$(install_command mktemp -d /Applications/.capd-install.XXXXXX)
+install_command ditto "$source_app" "$capd_stage_dir/capd.app"
+
+if pkill -x CapdApp; then
+	attempts=0
+	while pgrep -x CapdApp >/dev/null; do
+		attempts=$((attempts + 1))
+		if [ "$attempts" -ge 50 ]; then
+			echo "capd did not quit; leaving $app_path unchanged." >&2
+			exit 1
+		fi
+		sleep 0.1
+	done
+fi
+
+install_command rm -rf "$app_path"
+install_command mv "$capd_stage_dir/capd.app" "$app_path"
+
+mkdir -p "$(dirname "$cli_link")"
+ln -sfn "$app_path/Contents/MacOS/capd" "$cli_link"
+
+# The agent is KeepAlive, so a running one keeps executing the replaced binary.
+agent_service="gui/$(id -u)/$bundle_id.agent"
+if launchctl print "$agent_service" >/dev/null 2>&1; then
+	launchctl kickstart -k "$agent_service"
+fi
+
+open "$app_path"
+echo "capd installed at $app_path"
