@@ -40,11 +40,3 @@ Never omit errors, test failures, risks, caveats, or decisions I need to make.
 - File paths, command names, and technical identifiers: keep them exact.
 
 Apply these rules consistently without mentioning that you are doing so.
-
-# TypeScript
-
-Only use the following on `.ts` and `.tsx` files.
-
-## Conventions
-
-- Always use `type` over `interface`.
