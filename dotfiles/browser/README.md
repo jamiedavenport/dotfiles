@@ -2,9 +2,8 @@
 
 Primary browser: Dia Free
 
-Dia is the minimal browsing layer. Keep AI work in the dedicated ChatGPT,
-Codex, and Cursor applications rather than connecting browser activity to
-additional services.
+Dia is the minimal browsing layer. Keep AI work in Claude Code rather than
+connecting browser activity to additional services.
 
 ## First run
 

@@ -33,70 +33,23 @@ After the initial bootstrap:
 4. Verify authentication with `ssh -T git@github.com`.
 5. Run `mise bootstrap` to clone the configured repositories.
 
-### Context7 access
+### Claude Code
 
-Codex uses the hosted Context7 MCP server for current third-party library and
-API documentation. Its configuration is versioned, but OAuth credentials stay
-on the workstation.
+Claude Code's user configuration lives in `dotfiles/claude/`:
 
-After the initial bootstrap, authenticate once:
+- `CLAUDE.md` holds the global instructions.
+- `settings.json` is copied to `~/.claude/settings.json`. Capture changes made
+  from `/config` with `./bin/mise bootstrap dotfiles add --changed`.
+- `agents/`, `rules/`, and `skills/` are symlinked from `~/.claude/`, so new
+  ones created in Claude Code land in this repository. Content installed by
+  apps (tldraw) or synced from claude.ai is ignored by Git.
+- `mcp.json` lists the user-scope MCP servers. Claude Code stores them in
+  `~/.claude.json` with runtime state, so bootstrap registers them through the
+  `claude` CLI instead. Run `./bin/mise run claude:mcp` after editing the list.
 
-```sh
-codex mcp login context7
-```
-
-Complete the browser login, start a new Codex thread, and verify the connection
-with `codex mcp list` or `/mcp` in the Codex terminal UI. No Context7 API key is
-stored in this repository.
-
-### Sidequest access
-
-Codex uses the hosted [Sidequest MCP server](https://github.com/jamiedavenport/sidequest/blob/main/docs/mcp.md)
-at `https://sdqst.app/mcp`. After the initial bootstrap, authenticate once:
-
-```sh
-./bin/mise exec -- codex mcp login sidequest
-```
-
-Complete the browser email-code login and choose read access or allow task
-changes. Start a new Codex thread and verify the connection with
-`./bin/mise exec -- codex mcp list` or `/mcp` in the Codex terminal UI.
-OAuth credentials stay on the workstation. Manage or revoke access at
-[Sidequest connections](https://sdqst.app/connections).
-
-The hosted MCP endpoint must be enabled before login can succeed. If the endpoint
-or OAuth discovery returns HTTP 404, follow Sidequest's deployment instructions
-to enable MCP, then retry the login.
-
-### Polar access
-
-Codex uses the hosted [Polar MCP server](https://polar.sh/docs/integrate/mcp)
-at `https://mcp.polar.sh/mcp/polar-mcp` for the live Polar organization.
-After the initial bootstrap, authenticate once:
-
-```sh
-./bin/mise exec -- codex mcp login polar
-```
-
-The `polar-sandbox` server uses `https://mcp.polar.sh/mcp/polar-sandbox`
-for testing. Authenticate it separately:
-
-```sh
-./bin/mise exec -- codex mcp login polar-sandbox
-```
-
-Complete the browser login and authorize access to your organization. Start a
-new Codex thread and verify the connection with
-`./bin/mise exec -- codex mcp list` or `/mcp` in the Codex terminal UI.
-OAuth credentials stay on the workstation; no API key is stored in this repository.
-
-If sandbox login reports `OAuth authorization endpoint origin does not match the
-authorization server origin without issuer-bound callbacks`, Polar's sandbox
-OAuth discovery metadata is incompatible with Codex's validation. The server
-is configured, but authentication is blocked by this compatibility issue.
-The same error is reported for Polar in
-[Codex issue #41362](https://github.com/openai/codex/issues/41362#issuecomment-5462330681).
-Retry login after a compatible fix is available in Codex or Polar.
+OAuth credentials stay on the workstation; no API key is stored in this
+repository. Authenticate each server once from `/mcp` in Claude Code, and
+verify them with `./bin/mise exec -- claude mcp list`.
 
 The bootstrap is safe to run again. It skips resources that are already in the
 desired state, while the small imperative bootstrap task is written to be
@@ -194,7 +147,7 @@ latest at installation time.
 - `mise.lock` pins tool versions and platform-specific artifacts.
 - `bin/mise` is the generated, repository-pinned mise launcher used during
   initial installation.
-- `dotfiles/` contains configuration for Zsh, Git, SSH, Cursor, Codex, Ghostty,
+- `dotfiles/` contains configuration for Zsh, Git, SSH, Cursor, Neovim, Claude Code, Ghostty,
   Starship, Raycast, and the browser baseline.
 
 Local mise overrides and temporary files are intentionally ignored by Git.

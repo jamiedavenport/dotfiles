@@ -1,6 +1,5 @@
 [settings]
 lockfile = true
-minimum_release_age_excludes = ["codex"]
 
 # ---------------------------------------------------------------------------
 # Versioned developer CLI tools
@@ -8,7 +7,6 @@ minimum_release_age_excludes = ["codex"]
 
 [tools]
 github-cli = "latest"
-codex = "latest"
 claude = "latest"
 uv = "latest"
 "pipx:htomd" = { version = "0.1.0", uvx_args = "--python 3.14" }
@@ -17,9 +15,6 @@ uv = "latest"
 node = "24.20.0"
 fnox = "1.35.1"
 "aqua:1password/cli" = "2.39.0"
-
-# Local MCP gateway: holds OAuth tokens once for every coding agent.
-"github:tbxark/mcp-proxy" = "1.1.0"
 
 ripgrep = "latest"
 fd = "latest"
@@ -32,6 +27,7 @@ delta = "latest"
 jq = "latest"
 
 starship = "latest"
+neovim = "latest"
 shellcheck = "latest"
 shfmt = "latest"
 
@@ -58,10 +54,7 @@ xcodes = "latest"
 "brew-cask:ghostty" = { os = "macos" }
 "brew-cask:cursor" = { os = "macos" }
 "brew-cask:tldraw" = { os = "macos" }
-"brew-cask:cursor-cli" = { os = "macos" }
 "brew-cask:1password" = { os = "macos" }
-"brew-cask:chatgpt" = { os = "macos" }
-"brew-cask:grok-bot" = { os = "macos" }
 "brew-cask:paper-design" = { os = "macos/arm64" }
 "brew-cask:raycast" = { os = "macos/arm64" }
 "brew-cask:thebrowsercompany-dia" = { os = "macos/arm64" }
@@ -104,29 +97,23 @@ xcodes = "latest"
 
 "~/.config/starship.toml" = { source = "dotfiles/starship/starship.toml", mode = "symlink" }
 "~/.config/ghostty/config.ghostty" = { source = "dotfiles/ghostty/config.ghostty", mode = "symlink" }
+# The whole directory is linked so vim.pack's lockfile is versioned with the config.
+"~/.config/nvim" = { source = "dotfiles/nvim", mode = "symlink" }
 
 # Cursor GUI files are copied rather than symlinked because GUI editors may
 # replace settings files atomically. mise can capture their later changes.
 "~/Library/Application Support/Cursor/User/settings.json" = { source = "dotfiles/cursor/settings.json", mode = "copy" }
 "~/Library/Application Support/Cursor/User/keybindings.json" = { source = "dotfiles/cursor/keybindings.json", mode = "copy" }
 
-# Cursor Agent CLI config can also change when preferences are toggled.
-"~/.cursor/cli-config.json" = { source = "dotfiles/cursor/cli-config.json", mode = "copy" }
-"~/.cursor/mcp.json" = { source = "dotfiles/cursor/mcp.json", mode = "copy" }
-
-# Codex and the apps that hook into it replace this file atomically, which
-# breaks a symlink. Copy it, like the Cursor files, and capture later changes.
-"~/.codex/config.toml" = { source = "dotfiles/codex/config.toml", mode = "copy" }
-
-# Shared global instructions for every coding agent.
-"~/.codex/AGENTS.md" = { source = "dotfiles/agents/AGENTS.md", mode = "symlink" }
-"~/.claude/CLAUDE.md" = { source = "dotfiles/agents/AGENTS.md", mode = "symlink" }
-
-# Shared MCP gateway. Agents connect to http://localhost:9090/<server>/mcp.
-# OAuth tokens live in ~/Library/Application Support/mcp-proxy/oauth, outside this repo.
-"~/.config/mcp-proxy/config.json" = { source = "dotfiles/mcp-proxy/config.json", mode = "symlink" }
-# launchd may not follow symlinked agents at login, so copy the plist.
-"~/Library/LaunchAgents/local.mcp-proxy.plist" = { source = "dotfiles/mcp-proxy/local.mcp-proxy.plist", mode = "copy" }
+# Claude Code user configuration.
+"~/.claude/CLAUDE.md" = { source = "dotfiles/claude/CLAUDE.md", mode = "symlink" }
+# Claude Code rewrites settings.json from /config, so copy it and capture changes.
+"~/.claude/settings.json" = { source = "dotfiles/claude/settings.json", mode = "copy" }
+# Directories are symlinked so agents, rules, and skills created in Claude Code
+# land in this repo. App-installed and synced entries are ignored by Git.
+"~/.claude/agents" = { source = "dotfiles/claude/agents", mode = "symlink" }
+"~/.claude/rules" = { source = "dotfiles/claude/rules", mode = "symlink" }
+"~/.claude/skills" = { source = "dotfiles/claude/skills", mode = "symlink" }
 
 # ---------------------------------------------------------------------------
 # Bootstrap tasks
@@ -157,17 +144,6 @@ fi
 "$config_dir/scripts/install-cap"
 '''
 
-# Conductor's cask also uses an extensionless tar.gz archive.
-[tasks.install-conductor]
-description = "Install Conductor from its official archive (or preview with --dry-run)"
-run = '''
-config_dir="$PWD"
-if [ ! -x "$config_dir/scripts/install-conductor" ]; then
-  config_dir="$HOME/.config/mise"
-fi
-"$config_dir/scripts/install-conductor"
-'''
-
 # capd builds need full Xcode; the Command Line Tools are not enough.
 [tasks.install-xcode]
 description = "Install and select the Xcode version capd builds with (or preview with --dry-run)"
@@ -188,6 +164,18 @@ if [ ! -x "$config_dir/scripts/install-capd" ]; then
   config_dir="$HOME/.config/mise"
 fi
 "$config_dir/scripts/install-capd"
+'''
+
+# Claude Code keeps MCP servers in ~/.claude.json with runtime state, so the
+# server list is applied through the claude CLI instead of as a dotfile.
+[tasks."claude:mcp"]
+description = "Register Claude Code MCP servers (or preview with --dry-run)"
+run = '''
+config_dir="$PWD"
+if [ ! -x "$config_dir/scripts/configure-claude-mcp" ]; then
+  config_dir="$HOME/.config/mise"
+fi
+"$config_dir/scripts/configure-claude-mcp"
 '''
 
 [tasks.bootstrap]
@@ -258,7 +246,7 @@ if [ "$(uname -s)" = "Darwin" ]; then
     done
 
   "$config_dir/scripts/install-cap"
-  "$config_dir/scripts/install-conductor"
+  "$config_dir/scripts/configure-claude-mcp"
   "$config_dir/scripts/configure-dock"
   /usr/bin/swift "$config_dir/scripts/configure-profile-photo.swift"
 fi
@@ -269,9 +257,10 @@ description = "Validate the configuration without changing the workstation"
 run = '''
 cd "$HOME/.config/mise"
 
-shellcheck bootstrap.sh scripts/configure-dock scripts/install-cap scripts/install-capd scripts/install-conductor scripts/install-xcode
-shfmt -d bootstrap.sh scripts/configure-dock scripts/install-cap scripts/install-capd scripts/install-conductor scripts/install-xcode
+shellcheck bootstrap.sh scripts/configure-claude-mcp scripts/configure-dock scripts/install-cap scripts/install-capd scripts/install-xcode
+shfmt -d bootstrap.sh scripts/configure-claude-mcp scripts/configure-dock scripts/install-cap scripts/install-capd scripts/install-xcode
 bash -n bin/mise
+nvim --headless --clean -u dotfiles/nvim/init.lua +qa
 /usr/bin/swiftc -typecheck scripts/configure-profile-photo.swift
 xcrun swift-format lint --strict scripts/configure-profile-photo.swift
 node scripts/check-private-skills.mjs
@@ -285,8 +274,8 @@ fi
 mise bootstrap plan
 mise bootstrap dotfiles diff
 ./scripts/install-cap --dry-run
+./scripts/configure-claude-mcp --dry-run
 ./scripts/install-capd --dry-run
-./scripts/install-conductor --dry-run
 ./scripts/install-xcode --dry-run
 /usr/bin/swift "$PWD/scripts/configure-profile-photo.swift" --dry-run
 '''

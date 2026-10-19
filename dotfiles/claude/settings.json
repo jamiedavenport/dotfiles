@@ -1,0 +1,51 @@
+{
+  "model": "opus",
+  "hooks": {
+    "SubagentStart": [
+      {
+        "matcher": "tldraw-offline",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node '/Users/jamie/skills/tldraw-offline/inject-server-context.mjs' SubagentStart"
+          }
+        ]
+      }
+    ]
+  },
+  "voice": {
+    "enabled": true,
+    "mode": "hold"
+  },
+  "theme": "light",
+  "autoMode": {
+    "environment": [
+      "### Org-wide",
+      "**Organization**: None configured — repo remote is github.com/distill-review/app (org: distill-review); no other org evidence gathered",
+      "**Cloud provider(s)**: Cloudflare (Workers, D1, queues, Workflows — per CONTRIBUTING.md and CI secrets CLOUDFLARE_ACCOUNT_ID, CLOUDFLARE_API_TOKEN, CLOUDFLARE_DATABASE_ID)",
+      "**Repository visibility**: private (distill-review/app, confirmed via gh)",
+      "**Internal sharing / snippet hosting**: None configured — treat public paste/gist services as outside the trust boundary",
+      "**Secrets management**: Local `.dev.vars` files (gitignored via `.env*`/`!.env.example` patterns); CI secrets CLOUDFLARE_ACCOUNT_ID, CLOUDFLARE_API_TOKEN, CLOUDFLARE_DATABASE_ID referenced in workflows",
+      "**Default / protected branches**: `main` (default, protected per gh; no rulesets listed)",
+      "**CI/CD deploy targets**: Cloudflare Workers via `bun run deploy` (package.json script); .github/workflows present",
+      "**Network posture**: None configured",
+      "**Host containment**: None configured — assume Claude Code runs on an ordinary developer machine with open internet",
+      "**Source control**: distill-review/app (this repo) and its origin remote only",
+      "**Trusted internal domains**: tunnel.distill.review, app.distill.review, sandbox.distill.review (contacted repeatedly in this project's transcripts)",
+      "**Trusted cloud buckets**: None configured",
+      "**Key internal services**: e2b.dev / docs.e2b.dev (sandbox execution, per CONTRIBUTING.md ANTHROPIC/E2B keys and transcript host hits)",
+      "**Internal package registry**: None configured",
+      "**Sensitive data locations & audiences**: apps/www/.env.local, apps/*/.dev.vars (local secrets); share only with audiences cleared at the [named+specifics] bar",
+      "**Data retention / declassification**: None configured",
+      "**Sensitive remote targets**: any namespace/host/container with `prod` or `production` as a whole word/segment — note `~/distill/app-prod-schema` sibling checkout name suggests a prod schema context exists but was not independently vetted (NOT GATHERED)",
+      "**Protected deployment namespaces / environments**: None configured — fall back to the Sensitive remote targets heuristic",
+      "**Protected IaC scopes**: IAM, RBAC, networking, quota, and node-pool resources; anything whose name or tag carries `prod` or `production` as a whole word or name segment",
+      "### User-specific",
+      "**Primary use of Claude Code**: software development (Distill — AI-built work review tool)",
+      "**Trusted repo**: distill-review/app (this repo, private) and its origin remote (github.com/distill-review/app)",
+      "**Org-specific CLIs**: None configured — bunx, wrangler, cloudflared, mise, gh, shipwright seen in usage but are generic/personal toolchain, not org-specific",
+      "**Routine under jamie/ prefix**: none observed with that scoping"
+    ]
+  },
+  "voiceEnabled": true
+}

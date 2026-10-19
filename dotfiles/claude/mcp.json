@@ -1,0 +1,36 @@
+{
+  "mcpServers": {
+    "distill": {
+      "type": "http",
+      "url": "https://app.distill.review/mcp"
+    },
+    "paper": {
+      "type": "http",
+      "url": "http://127.0.0.1:29979/mcp"
+    },
+    "axiom": {
+      "type": "http",
+      "url": "https://mcp.axiom.co/mcp"
+    },
+    "context7": {
+      "type": "http",
+      "url": "https://mcp.context7.com/mcp/oauth"
+    },
+    "linear": {
+      "type": "http",
+      "url": "https://mcp.linear.app/mcp"
+    },
+    "mobbin": {
+      "type": "http",
+      "url": "https://api.mobbin.com/mcp"
+    },
+    "notion": {
+      "type": "http",
+      "url": "https://mcp.notion.com/mcp"
+    },
+    "sentry": {
+      "type": "http",
+      "url": "https://mcp.sentry.dev/mcp"
+    }
+  }
+}

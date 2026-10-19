@@ -1,0 +1,54 @@
+#!/bin/sh
+set -eu
+
+# Register the user-scope MCP servers in dotfiles/claude/mcp.json with Claude
+# Code. Claude Code stores them in ~/.claude.json alongside runtime state, so
+# that file cannot be a managed dotfile. Servers missing from the list are
+# reported, not removed.
+
+case "${1:-}" in
+--dry-run) dry_run=true ;;
+"") dry_run=false ;;
+*)
+	echo "Usage: $0 [--dry-run]" >&2
+	exit 1
+	;;
+esac
+
+config_dir=$(cd "$(dirname "$0")/.." && pwd)
+desired="$config_dir/dotfiles/claude/mcp.json"
+state="$HOME/.claude.json"
+
+if ! command -v claude >/dev/null 2>&1; then
+	echo "Claude Code CLI not found; skipping MCP configuration." >&2
+	exit 0
+fi
+
+current='{}'
+if [ -f "$state" ]; then
+	current=$(jq -c '.mcpServers // {}' "$state")
+fi
+
+for name in $(jq -r '.mcpServers | keys[]' "$desired"); do
+	server=$(jq -c --arg name "$name" '.mcpServers[$name]' "$desired")
+	existing=$(printf '%s' "$current" | jq -c --arg name "$name" '.[$name] // empty')
+	if [ "$existing" = "$server" ]; then
+		echo "MCP server $name is already configured."
+		continue
+	fi
+	if [ "$dry_run" = true ]; then
+		echo "Would configure MCP server $name: $server"
+		continue
+	fi
+	if [ -n "$existing" ]; then
+		claude mcp remove --scope user "$name" >/dev/null
+	fi
+	claude mcp add-json --scope user "$name" "$server" >/dev/null
+	echo "Configured MCP server $name."
+done
+
+printf '%s' "$current" | jq -r --slurpfile desired "$desired" \
+	'keys[] as $name | select($desired[0].mcpServers | has($name) | not) | $name' |
+	while IFS= read -r name; do
+		echo "MCP server $name is configured but not in dotfiles/claude/mcp.json." >&2
+	done

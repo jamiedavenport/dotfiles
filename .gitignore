@@ -11,9 +11,13 @@ mise.*.local.lock
 fnox.local.toml
 fnox.*.local.toml
 .fnox.local.toml
-dotfiles/codex/skills/
 .agents/skills/
-.codex/skills/
+
+# Claude Code content installed by apps or synced from claude.ai, not authored here.
+dotfiles/claude/skills/synced/
+dotfiles/claude/skills/.trash/
+dotfiles/claude/skills/tldraw-offline/
+dotfiles/claude/agents/tldraw-offline.md
 
 # Temporary files
 *.swp
