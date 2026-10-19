@@ -51,5 +51,6 @@
       "**Routine under jamie/ prefix**: none observed with that scoping"
     ]
   },
-  "voiceEnabled": true
+  "voiceEnabled": true,
+  "autoMemoryEnabled": false
 }

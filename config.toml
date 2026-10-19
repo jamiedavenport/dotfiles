@@ -1,5 +1,8 @@
 [settings]
 lockfile = true
+# Respect version files used by repositories without a mise.toml, such as
+# .nvmrc, .node-version, .bun-version, and package.json packageManager.
+idiomatic_version_file_enable_tools = ["node", "bun", "deno", "npm", "pnpm", "yarn"]
 
 # ---------------------------------------------------------------------------
 # Versioned developer CLI tools
