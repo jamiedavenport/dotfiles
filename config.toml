@@ -46,6 +46,7 @@ xcodes = "latest"
 # ---------------------------------------------------------------------------
 
 [bootstrap.packages]
+"brew:anomalyco/tap/opencode-v2" = { os = "macos" }
 "brew:cloudflared" = { os = "macos" }
 "brew:dockutil" = { os = "macos" }
 "brew:zsh-autosuggestions" = { os = "macos" }
