@@ -1,0 +1,30 @@
+#!/bin/sh
+set -eu
+
+# Download the Chromium build used by the Playwright MCP server declared in
+# dotfiles/claude/mcp.json. Each @playwright/mcp release pins a Playwright
+# build that expects a specific Chromium revision under
+# ~/Library/Caches/ms-playwright, so this must be re-run when the server
+# updates. Playwright skips revisions that are already downloaded.
+
+case "${1:-}" in
+--dry-run) dry_run=true ;;
+"") dry_run=false ;;
+*)
+	echo "Usage: $0 [--dry-run]" >&2
+	exit 1
+	;;
+esac
+
+if ! command -v npx >/dev/null 2>&1; then
+	echo "npx not found; skipping Playwright browser installation." >&2
+	exit 0
+fi
+
+if [ "$dry_run" = true ]; then
+	echo "Would install the Playwright MCP Chromium build (chrome-for-testing)."
+	exit 0
+fi
+
+npx --yes @playwright/mcp@latest install-browser chrome-for-testing
+echo "Installed the Playwright MCP Chromium build."

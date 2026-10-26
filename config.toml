@@ -173,13 +173,14 @@ fi
 # Claude Code keeps MCP servers in ~/.claude.json with runtime state, so the
 # server list is applied through the claude CLI instead of as a dotfile.
 [tasks."claude:mcp"]
-description = "Register Claude Code MCP servers (or preview with --dry-run)"
+description = "Register Claude Code MCP servers and install the Playwright browser"
 run = '''
 config_dir="$PWD"
 if [ ! -x "$config_dir/scripts/configure-claude-mcp" ]; then
   config_dir="$HOME/.config/mise"
 fi
 "$config_dir/scripts/configure-claude-mcp"
+"$config_dir/scripts/install-playwright-browser"
 '''
 
 [tasks.bootstrap]
@@ -251,6 +252,7 @@ if [ "$(uname -s)" = "Darwin" ]; then
 
   "$config_dir/scripts/install-cap"
   "$config_dir/scripts/configure-claude-mcp"
+  "$config_dir/scripts/install-playwright-browser"
   "$config_dir/scripts/configure-dock"
   /usr/bin/swift "$config_dir/scripts/configure-profile-photo.swift"
 fi
@@ -261,8 +263,8 @@ description = "Validate the configuration without changing the workstation"
 run = '''
 cd "$HOME/.config/mise"
 
-shellcheck bootstrap.sh scripts/configure-claude-mcp scripts/configure-dock scripts/install-cap scripts/install-capd scripts/install-xcode
-shfmt -d bootstrap.sh scripts/configure-claude-mcp scripts/configure-dock scripts/install-cap scripts/install-capd scripts/install-xcode
+shellcheck bootstrap.sh scripts/configure-claude-mcp scripts/configure-dock scripts/install-cap scripts/install-capd scripts/install-playwright-browser scripts/install-xcode
+shfmt -d bootstrap.sh scripts/configure-claude-mcp scripts/configure-dock scripts/install-cap scripts/install-capd scripts/install-playwright-browser scripts/install-xcode
 bash -n bin/mise
 nvim --headless --clean -u dotfiles/nvim/init.lua +qa
 /usr/bin/swiftc -typecheck scripts/configure-profile-photo.swift
@@ -279,6 +281,7 @@ mise bootstrap plan
 mise bootstrap dotfiles diff
 ./scripts/install-cap --dry-run
 ./scripts/configure-claude-mcp --dry-run
+./scripts/install-playwright-browser --dry-run
 ./scripts/install-capd --dry-run
 ./scripts/install-xcode --dry-run
 /usr/bin/swift "$PWD/scripts/configure-profile-photo.swift" --dry-run
