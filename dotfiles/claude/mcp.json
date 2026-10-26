@@ -24,6 +24,10 @@
       "type": "http",
       "url": "https://api.mobbin.com/mcp"
     },
+    "muesli-dev": {
+      "type": "http",
+      "url": "https://api.dev.muesli.ing/mcp"
+    },
     "notion": {
       "type": "http",
       "url": "https://mcp.notion.com/mcp"
