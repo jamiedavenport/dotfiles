@@ -16,10 +16,6 @@
       "type": "http",
       "url": "https://mcp.context7.com/mcp/oauth"
     },
-    "linear": {
-      "type": "http",
-      "url": "https://mcp.linear.app/mcp"
-    },
     "mobbin": {
       "type": "http",
       "url": "https://api.mobbin.com/mcp"
