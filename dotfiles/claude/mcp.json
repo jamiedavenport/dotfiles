@@ -39,6 +39,14 @@
         "--browser",
         "chromium"
       ]
+    },
+    "xcodebuildmcp": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mobilebuildmcp@latest",
+        "mcp"
+      ]
     }
   }
 }
