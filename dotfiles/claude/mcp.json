@@ -47,6 +47,10 @@
         "mobilebuildmcp@latest",
         "mcp"
       ]
+    },
+    "lumae": {
+      "command": "/Applications/Lumae.app/Contents/MacOS/lumae-mcp",
+      "args": []
     }
   }
 }

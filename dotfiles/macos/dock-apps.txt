@@ -2,7 +2,7 @@
 /Applications/Dia.app
 /Applications/Cursor.app
 /Applications/Ghostty.app
-/Applications/Cap.app
+/Applications/Lumae.app
 /Applications/Notion Calendar.app
 /Applications/Notion.app
 /Applications/Granola.app

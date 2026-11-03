@@ -69,6 +69,7 @@ xcodes = "latest"
 "brew-cask:tidal" = { os = "macos" }
 "brew-cask:block-buzz" = { os = "macos" }
 "brew-cask:nordvpn" = { os = "macos" }
+"brew-cask:matlegault/lumae/lumae" = { os = "macos" }
 
 # One shared font makes Cursor, its integrated terminal, and Ghostty consistent.
 "brew-cask:font-jetbrains-mono-nerd-font" = { os = "macos" }
@@ -134,17 +135,6 @@ if [ ! -f "$config_dir/scripts/configure-profile-photo.swift" ]; then
   config_dir="$HOME/.config/mise"
 fi
 /usr/bin/swift "$config_dir/scripts/configure-profile-photo.swift"
-'''
-
-# Cap's cask uses an extensionless tar.gz that mise cannot extract reliably.
-[tasks.install-cap]
-description = "Install Cap from its official macOS DMG (or preview with --dry-run)"
-run = '''
-config_dir="$PWD"
-if [ ! -x "$config_dir/scripts/install-cap" ]; then
-  config_dir="$HOME/.config/mise"
-fi
-"$config_dir/scripts/install-cap"
 '''
 
 # capd builds need full Xcode; the Command Line Tools are not enough.
@@ -249,7 +239,6 @@ if [ "$(uname -s)" = "Darwin" ]; then
       "$cursor_cli" --install-extension "$extension_vsix"
     done
 
-  "$config_dir/scripts/install-cap"
   "$config_dir/scripts/configure-claude-mcp"
   "$config_dir/scripts/install-playwright-browser"
   "$config_dir/scripts/configure-dock"
@@ -262,8 +251,8 @@ description = "Validate the configuration without changing the workstation"
 run = '''
 cd "$HOME/.config/mise"
 
-shellcheck bootstrap.sh scripts/configure-claude-mcp scripts/configure-dock scripts/install-cap scripts/install-capd scripts/install-playwright-browser scripts/install-xcode
-shfmt -d bootstrap.sh scripts/configure-claude-mcp scripts/configure-dock scripts/install-cap scripts/install-capd scripts/install-playwright-browser scripts/install-xcode
+shellcheck bootstrap.sh scripts/configure-claude-mcp scripts/configure-dock scripts/install-capd scripts/install-playwright-browser scripts/install-xcode
+shfmt -d bootstrap.sh scripts/configure-claude-mcp scripts/configure-dock scripts/install-capd scripts/install-playwright-browser scripts/install-xcode
 bash -n bin/mise
 nvim --headless --clean -u dotfiles/nvim/init.lua +qa
 /usr/bin/swiftc -typecheck scripts/configure-profile-photo.swift
@@ -278,7 +267,6 @@ fi
 
 mise bootstrap plan
 mise bootstrap dotfiles diff
-./scripts/install-cap --dry-run
 ./scripts/configure-claude-mcp --dry-run
 ./scripts/install-playwright-browser --dry-run
 ./scripts/install-capd --dry-run

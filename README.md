@@ -108,25 +108,18 @@ attributes it changed if an update fails.
 above to preview this task. The photo may require signing out and back in to
 appear in an already-open login or settings view.
 
-### Cap screen capture
+### Lumae screen recorder
 
-Bootstrap installs Cap from its official DMG, selecting Apple Silicon or Intel
-automatically (including when running under Rosetta). This avoids an extraction
-issue with the extensionless archive used by Cap's Homebrew cask in the pinned
-mise version. The installer checks the app's identity, signature, and Gatekeeper
-assessment before copying it into `/Applications`; it uses `sudo` if needed.
-Existing Cap installations are left in place and use Cap's own updater.
+Lumae is declared as a cask from its third-party tap
+(`brew-cask:matlegault/lumae/lumae`), which mise reads from the tap's Ruby
+definition on GitHub. `mise bootstrap plan` previews it like any other cask.
+Lumae updates itself through Sparkle, so the installed version is not pinned.
 
-```sh
-./bin/mise run install-cap -- --dry-run  # Preview the Cap installation
-./bin/mise run install-cap              # Install only Cap
-```
-
-`mise bootstrap plan` previews declarative resources; the Cap installer runs in
-the bootstrap task. `mise run check` also runs its read-only preview. New installs
-use the current official release rather than a version pinned in `mise.lock`.
-Launch Cap after installation to grant screen recording and microphone access
-as needed.
+`mcp.json` registers Lumae's MCP server, the `lumae-mcp` helper inside the app
+bundle, so Claude Code can record and edit demos. The helper starts Lumae in the
+background on first use, so the app must be installed before the server works.
+Launch Lumae once after installation to grant screen recording and microphone
+access as needed.
 
 ## Updating mise
 
