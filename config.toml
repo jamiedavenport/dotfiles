@@ -89,6 +89,43 @@ xcodes = "latest"
 "~/sidequest" = { url = "git@github.com:jamiedavenport/sidequest.git" }
 
 # ---------------------------------------------------------------------------
+# Blocked websites
+#
+# mise owns the whole of /etc/hosts, so keep the macOS defaults below and make
+# any other host entries here. Changes are applied with sudo; already-cached
+# lookups clear once their TTL expires, or immediately with:
+#   sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder
+# ---------------------------------------------------------------------------
+
+[bootstrap.files."/etc/hosts"]
+owner = "root"
+group = "wheel"
+mode = "0644"
+template = true
+content = """
+{%- set blocked_sites = [
+  "youtube.com",
+] -%}
+##
+# Host Database
+#
+# localhost is used to configure the loopback interface
+# when the system is booting.  Do not change this entry.
+##
+127.0.0.1	localhost
+255.255.255.255	broadcasthost
+::1             localhost
+
+# Blocked websites, managed by ~/.config/mise/config.toml
+{% for site in blocked_sites -%}
+0.0.0.0	{{ site }}
+0.0.0.0	www.{{ site }}
+::	{{ site }}
+::	www.{{ site }}
+{% endfor -%}
+"""
+
+# ---------------------------------------------------------------------------
 # Dotfiles
 # ---------------------------------------------------------------------------
 
