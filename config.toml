@@ -103,9 +103,7 @@ group = "wheel"
 mode = "0644"
 template = true
 content = """
-{%- set blocked_sites = [
-  "youtube.com",
-] -%}
+{%- set blocked_sites = [] -%}
 ##
 # Host Database
 #
