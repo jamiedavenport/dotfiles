@@ -5,6 +5,7 @@
 /Applications/Lumae.app
 /Applications/Notion Calendar.app
 /Applications/Notion.app
+/Applications/Reflect.app
 /Applications/Granola.app
 /Applications/Slack.app
 /Applications/WhatsApp.app
