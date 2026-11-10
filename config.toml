@@ -88,7 +88,8 @@ xcodes = "latest"
 "~/arxivv.org" = { url = "git@github.com:jamiedavenport/arxivv.org.git" }
 "~/auvia" = { url = "git@github.com:Auvia-io/auvia.git" }
 "~/capd" = { url = "git@github.com:jamiedavenport/capd.git" }
-"~/jxd.dev" = { url = "git@github.com:jamiedavenport/jxd.dev.git" }
+"~/football-manager" = { url = "git@github.com:jamiedavenport/football-manager.git" }
+"~/jxd.dev" ={ url = "git@github.com:jamiedavenport/jxd.dev.git" }
 "~/muesli" = { url = "git@github.com:jamiedavenport/muesli.git" }
 "~/policystack" = { url = "git@github.com:jamiedavenport/policystack.git" }
 "~/sidequest" = { url = "git@github.com:jamiedavenport/sidequest.git" }
