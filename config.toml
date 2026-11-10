@@ -13,6 +13,11 @@ github-cli = "latest"
 claude = "latest"
 uv = "latest"
 "pipx:htomd" = { version = "0.1.0", uvx_args = "--python 3.14" }
+# Private TUI football manager game; provides the `fm` command. The repository
+# is private, so it installs over SSH like the repositories below. mise also
+# queries the GitHub API for it, so a first install or upgrade needs a token:
+#   GITHUB_TOKEN=$(gh auth token) ./bin/mise install
+"pipx:git+ssh://git@github.com/jamiedavenport/football-manager.git" = { version = "main", uvx_args = "--python 3.14" }
 
 # Additional developer tools.
 node = "24.20.0"
