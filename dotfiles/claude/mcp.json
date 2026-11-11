@@ -20,9 +20,9 @@
       "type": "http",
       "url": "https://api.mobbin.com/mcp"
     },
-    "muesli-dev": {
+    "muesli": {
       "type": "http",
-      "url": "https://api.dev.muesli.ing/mcp"
+      "url": "https://app.muesli.ing/mcp"
     },
     "notion": {
       "type": "http",
