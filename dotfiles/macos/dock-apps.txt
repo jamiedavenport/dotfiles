@@ -3,12 +3,11 @@
 /Applications/Cursor.app
 /Applications/Ghostty.app
 /Applications/Lumae.app
+/Applications/Paper.app
+/Applications/tldraw offline.app
 /Applications/Notion Calendar.app
-/Applications/Notion.app
-/Applications/Reflect.app
 /Applications/Granola.app
 /Applications/Slack.app
 /Applications/WhatsApp.app
 /Applications/TIDAL.app
-/Applications/Buzz.app
 /Applications/NordVPN.app

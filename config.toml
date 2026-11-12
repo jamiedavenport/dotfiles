@@ -67,13 +67,10 @@ xcodes = "latest"
 "brew-cask:raycast" = { os = "macos/arm64" }
 "brew-cask:thebrowsercompany-dia" = { os = "macos/arm64" }
 "brew-cask:notion-calendar" = { os = "macos" }
-"brew-cask:notion" = { os = "macos" }
-"brew-cask:reflect" = { os = "macos" }
 "brew-cask:granola" = { os = "macos" }
 "brew-cask:slack" = { os = "macos" }
 "brew-cask:whatsapp" = { os = "macos" }
 "brew-cask:tidal" = { os = "macos" }
-"brew-cask:block-buzz" = { os = "macos" }
 "brew-cask:nordvpn" = { os = "macos" }
 "brew-cask:matlegault/lumae/lumae" = { os = "macos" }
 
